@@ -1,0 +1,82 @@
+Comprehensive Overview of the Inventory System
+
+The Inventory System in Elysian Nexus is designed to manage, categorize, and display the player’s items, both equipped and stored. It is a visual tool that organizes items into categories, provides easy navigation, and offers options for interacting with items. This system allows players to view, equip, unequip, and manage their items while ensuring a clean, organized interface that handles large quantities of items efficiently.
+Key Features:
+
+    Categories: Items are grouped into categories for better organization. Each category is represented by an icon and includes an item count. The categories include:
+        Weapons 🗡️
+        Armor 🛡️
+        Consumables 🍞
+        Materials ⚒️
+        Quest Items 🔮
+        Artifacts 💍
+        Miscellaneous 🎲
+
+    Equipped Items: The system tracks the player's equipped gear, such as weapons, armor, and accessories. Equipped items are shown at the top of the inventory screen, with the item name and the associated equipment slot (Main Hand, Offhand, etc.).
+
+    Item IDs: Every item in the inventory is uniquely identified by an internal Item ID, though this information is not displayed to the player. This ensures that the system can track and reference items consistently.
+
+    Item Interactions:
+        Equip/Unequip: Players can equip or unequip items, such as switching weapons or armor. This can be done by selecting the item in the inventory and choosing the “Equip/Unequip” option.
+        Expand Item Information: Players can view detailed information about any item, such as its effects, damage, durability, or any other stats, through the “Expand Item Information” option.
+
+    Icons and Visual Layout: The inventory is designed with visual ease in mind. It uses icons to represent each category, making it quick to identify the type of items in each section. The inventory also uses a grid-based layout to display items efficiently.
+
+    Notifications: The system includes a notification feature that informs the player of any changes made to the inventory, such as using potions, obtaining new items, or equipping new gear. These notifications keep the player informed and immersed.
+
+    Actions: The player has access to several actions that are visually represented in the menu. These actions include viewing categories of items, expanding item details, and equipping or unequipping gear.
+
+    Inventory Limits: The inventory can hold a large number of items, and the categories are designed to efficiently sort and display them. The system is optimized to handle large inventories with ease.
+
+Example of the Inventory Menu:
+
+Player Inventory:
+
+Equipped Items 🛠️:
+Slot	Item
+Main Hand ⚔️	Iron Sword
+Offhand 🛡️	Shield
+Head 🪖	Iron Helmet
+Torso 🛡️	Leather Armor
+Hands 🧤	Gloves
+Boots 👢	Steel Boots
+Accessory 1 💍	Ring of Strength
+Accessory 2 🧿	Amulet of Health
+
+Categories:
+Category	Item Count
+Weapons 🗡️	5
+Armor 🛡️	3
+Consumables 🍞	15
+Materials ⚒️	25
+Quest Items 🔮	3
+Artifacts 💍	2
+Miscellaneous 🎲	8
+
+Actions:
+
+    View Weapons 🗡️
+    View Armor 🛡️
+    View Consumables 🍞
+    View Materials ⚒️
+    View Quest Items 🔮
+    View Artifacts 💍
+    View Miscellaneous 🎲
+    Expand Item Information 📖
+    Equip/Unequip ⚙️
+    Exit Inventory 🚪
+
+Explanation of Actions:
+
+    View Weapons 🗡️: Opens the weapons section where all the player’s weapons are listed.
+    View Armor 🛡️: Opens the armor section where all the player’s armor pieces are listed.
+    View Consumables 🍞: Opens the consumables section where items like potions, food, and other usable items are listed.
+    View Materials ⚒️: Opens the materials section where gathered resources for crafting and other uses are listed.
+    View Quest Items 🔮: Opens the quest items section where items critical to the player’s ongoing quests are listed.
+    View Artifacts 💍: Opens the artifacts section where powerful and special items are stored.
+    View Miscellaneous 🎲: Opens the miscellaneous section where unique or non-categorized items are stored.
+    Expand Item Information 📖: Allows players to expand and view additional details about any item, such as stats, durability, or special effects.
+    Equip/Unequip ⚙️: Allows players to equip or unequip items by selecting them from their inventory.
+    Exit Inventory 🚪: Closes the inventory menu and returns the player to the main gameplay screen.
+
+This inventory system allows players to easily manage their items, with a focus on usability and visual clarity. The use of icons and organized categories ensures that players can quickly navigate and find what they need.

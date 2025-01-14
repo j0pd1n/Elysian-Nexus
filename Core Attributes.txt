@@ -1,0 +1,106 @@
+Core Attributes
+
+This system features several core attributes that define a character’s capabilities in combat, exploration, and interactions. Each attribute influences specific stats, allowing players to build characters suited to their preferred playstyle.
+
+    Vigor 🩸
+        Primary Role: Increases health (HP) and resistance to certain status effects like fire and poison.
+        Impact on Gameplay:
+            Vital for survivability.
+            Higher Vigor means a character can withstand more hits from enemies.
+
+    Mind 🌀
+        Primary Role: Governs Focus Points (FP), which are used for magic, skills, and summons.
+        Impact on Gameplay:
+            Essential for magic-based builds and players who rely on summoning spirits or using special weapon skills frequently.
+
+    Endurance 🛡️
+        Primary Role: Increases stamina, equip load, and resistance to certain status effects.
+        Impact on Gameplay:
+            Higher stamina allows for more actions in combat, such as dodging, blocking, and attacking.
+            Increases the maximum weight a character can carry, enabling the use of heavier armor and weapons without penalty.
+
+    Strength 💪
+        Primary Role: Governs the use of heavy, strength-based weapons and contributes to melee damage.
+        Impact on Gameplay:
+            Strength-based weapons, such as greatswords, hammers, and axes, require high Strength to wield.
+            Higher Strength increases the scaling damage of weapons suited for brute force.
+
+    Dexterity ⚡
+        Primary Role: Governs the use of agile, dexterity-based weapons and influences spellcasting speed.
+        Impact on Gameplay:
+            Dexterity-based weapons, such as katanas, daggers, and bows, require high Dexterity.
+            Reduces fall damage and influences how quickly players can recover from falls.
+
+    Intelligence 🧠
+        Primary Role: Governs the use of sorcery spells and magic damage scaling.
+        Impact on Gameplay:
+            Vital for sorcery-focused builds.
+            Higher Intelligence increases the effectiveness of magic spells and weapons with Intelligence scaling.
+
+    Faith 🙏
+        Primary Role: Governs the use of incantations and certain buffs/healing abilities.
+        Impact on Gameplay:
+            Vital for faith-based builds focusing on healing, buffs, or holy damage.
+            Higher Faith allows access to more powerful incantations.
+
+    Arcane 🐉
+        Primary Role: Governs discovery (item drop rate), certain status effects, and some unique spells and incantations.
+        Impact on Gameplay:
+            Influences the buildup of status effects like bleed or poison on certain weapons.
+            Useful for farming rare items and for builds focused on niche magic or weapon effects.
+
+Leveling Up
+
+    Attribute Allocation:
+        Players can allocate points to any of the attributes when leveling up.
+        Each point increases the chosen attribute's associated stats, such as HP, stamina, or weapon scaling.
+
+Scaling and Weapon Requirements
+
+    Weapon Requirements:
+        Many weapons have minimum attribute requirements (e.g., 20 Strength, 15 Dexterity) to wield effectively.
+        If a character lacks the required attributes, they can’t use the weapon properly.
+
+    Scaling:
+        Weapons and spells scale their damage based on specific attributes.
+        Scaling is denoted by a grade (e.g., A, B, C, D, E) that indicates how well an attribute boosts the weapon's damage.
+
+Status Effects and Resistances
+
+Certain attributes also contribute to resistance against status effects like:
+
+    Poison: Resistance tied to Vigor.
+    Frostbite: Resistance tied to Endurance.
+    Madness: Resistance tied to Mind.
+    Bleed: Resistance tied to specific gear and Arcane.
+
+Playstyles and Builds
+
+The flexibility of Elden Ring's attribute system allows players to create diverse builds, such as:
+
+    Strength Build:
+        High Strength for heavy weapons and armor.
+        Focus on raw melee damage and survivability.
+    Dexterity Build:
+        High Dexterity for fast weapons and mobility.
+        Suitable for hit-and-run tactics and ranged combat.
+    Magic Build:
+        High Intelligence or Faith for spellcasting.
+        Focus on ranged combat and status effect manipulation.
+    Hybrid Build:
+        Combining attributes like Strength and Intelligence for spellblade builds.
+        Allows versatile playstyles with both melee and magic.
+
+Core Design Principles
+
+    Player Choice:
+        Attributes are flexible, letting players create unique characters tailored to their playstyle.
+
+    Strategic Progression:
+        Deciding where to invest runes is critical, as each point can significantly impact gameplay.
+
+    Synergy Between Stats:
+        Attributes often complement each other (e.g., Strength and Endurance for tank builds).
+
+    Replayability:
+        Attribute-focused builds encourage multiple playthroughs, each with a different approach to combat and exploration.
