@@ -1,0 +1,151 @@
+Comprehensive Overview of the Combat System
+
+The combat system in Elysian Nexus is designed to be dynamic, intuitive, and strategic, tailored to work seamlessly in a text-based RPG format powered by an LLM (Large Language Model). It focuses on turn-based combat with a focus on decision-making, party management, and status effects, ensuring every choice matters.
+Key Features:
+
+    Turn-Based Combat: Combat is divided into rounds where players and enemies take turns making decisions, such as attacking, using abilities, defending, or using items.
+    Player and Party Member Control: Players control their own character’s actions, while the LLM handles decisions for NPC party members.
+    Enemy Actions: The LLM controls enemy actions, making combat more streamlined while maintaining challenge.
+    Action Types:
+        Attack: Direct physical or magical damage.
+        Ability: Special abilities tied to the character's skillset.
+        Item: Using consumables such as potions or equipment.
+        Defend: Reducing incoming damage for the turn.
+        Flee: Attempting to escape the combat.
+    Attributes and Status Effects: Health, Mana, and Stamina determine a character’s actions. Status effects like "Poisoned" or "Stunned" can alter the flow of combat.
+    Combat UI: Clear and easy-to-read character and enemy stat sheets provide real-time feedback on health, mana, stamina, and status effects.
+    Party Dynamics: Players control their own character, while the LLM handles decisions for NPC party members, ensuring combat flows smoothly.
+    Enemy Decision Making: Enemies can take various actions based on their capabilities, adding an element of unpredictability to the fight.
+
+Combat Flow:
+
+    Player Turn: The player is presented with several choices for actions, such as attacking, using an ability, using an item, defending, or fleeing.
+    Party Member Turn: The LLM controls the decisions of party members, depending on their role, stats, and current situation.
+    Enemy Turn: Enemies make their own decisions based on their behavior patterns, stats, and available abilities.
+    Round Resolution: After all players, party members, and enemies have made their moves, the system updates health, mana, stamina, status effects, and other changes.
+    Victory or Defeat: Combat continues until either the player’s party or the enemies are defeated.
+
+Combat Scenario Examples
+1v1 Battle Example: Jop (Player) vs. Bandit Leader
+
+Round 1: Player Choices
+
+Your Party:
+
+Character          Health ❤️    Mana ⚡   Stamina 💪   Status
+Jop 👨‍⚖️            70/100       30/30     50/50      Normal
+
+Enemies:
+
+Enemy              Health ❤️    Mana ⚡   Stamina 💪   Status
+A1. Bandit Leader 💀 50/80        N/A        20/20      Normal
+
+Jop, make your choice:
+
+1️⃣ Attack: Strike Bandit Leader 💀.
+2️⃣ Ability: Use Fireball 🔥.
+3️⃣ Item: Use Healing Potion 💊.
+4️⃣ Defend: Brace for impact 🛡️.
+5️⃣ Flee: Attempt to escape 🏃‍♂️.
+
+Jop's Action:
+
+    Choice: 1️⃣ Attack: Strike Bandit Leader 💀.
+    Effect: Jop strikes the Bandit Leader for 25 damage. Bandit Leader's health is now 25/80.
+
+Round 2: Enemy Choices
+
+Your Party:
+
+Character          Health ❤️    Mana ⚡   Stamina 💪   Status
+Jop 👨‍⚖️            70/100       30/30     50/50      Normal
+
+Enemies:
+
+Enemy              Health ❤️    Mana ⚡   Stamina 💪   Status
+A1. Bandit Leader 💀 25/80        N/A        20/20      Normal
+
+Enemy Action:
+
+    Choice: 1️⃣ Bandit Leader 💀: Strike Jop 👨‍⚖️.
+    Effect: Bandit Leader strikes Jop for 20 damage. Jop's health is now 50/100.
+
+Round 3: Player Choices
+
+Your Party:
+
+Character          Health ❤️    Mana ⚡   Stamina 💪   Status
+Jop 👨‍⚖️            50/100       30/30     50/50      Normal
+
+Jop, make your choice:
+
+1️⃣ Attack: Strike Bandit Leader 💀.
+2️⃣ Ability: Use Fireball 🔥.
+3️⃣ Item: Use Healing Potion 💊.
+4️⃣ Defend: Brace for impact 🛡️.
+5️⃣ Flee: Attempt to escape 🏃‍♂️.
+
+Jop's Action:
+
+    Choice: 1️⃣ Attack: Strike Bandit Leader 💀.
+    Effect: Jop strikes the Bandit Leader for 25 damage. Bandit Leader is defeated.
+
+3v3 Battle Example: Jop, Akuna, and Lyra vs. Bandit Leader, Bandit Archer, and Wild Boar
+
+Round 1: Player Choices
+
+Your Party:
+
+Character          Health ❤️    Mana ⚡   Stamina 💪   Status
+Jop 👨‍⚖️            70/100       30/30     50/50      Normal
+Akuna 🐉            125/150      40/40     50/60      Normal
+Lyra 🧙‍♀️          80/80        40/50     40/40      Normal
+
+Enemies:
+
+Enemy              Health ❤️    Mana ⚡   Stamina 💪   Status
+A1. Bandit Leader 💀 50/80        N/A        20/20      Normal
+A2. Bandit Archer 🏹 60/60        N/A        25/25      Normal
+W1. Wild Boar 🦛     170/200      N/A        30/30      Normal
+
+Jop, make your choice:
+
+1️⃣ Attack: Strike Bandit Leader 💀.
+2️⃣ Ability: Use Fireball 🔥.
+3️⃣ Item: Use Healing Potion 💊.
+4️⃣ Defend: Brace for impact 🛡️.
+5️⃣ Flee: Attempt to escape 🏃‍♂️.
+
+Akuna, make your choice:
+
+1️⃣ Attack: Strike Wild Boar 🦛.
+2️⃣ Ability: Use Dragon Claw 🐉.
+3️⃣ Item: Use Healing Potion 💊.
+4️⃣ Defend: Brace for impact 🛡️.
+5️⃣ Flee: Attempt to escape 🏃‍♂️.
+
+Lyra, make your choice:
+
+1️⃣ Attack: Strike Bandit Archer 🏹.
+2️⃣ Ability: Use Heal on Akuna 🐉.
+3️⃣ Item: Use Healing Potion 💊.
+4️⃣ Defend: Brace for impact 🛡️.
+5️⃣ Flee: Attempt to escape 🏃‍♀️.
+
+Round 2: Resolution
+
+After the player and party member choices are made, the system resolves the actions.
+
+    Jop: Strikes Bandit Leader for 25 damage. Bandit Leader is now at 25/80.
+    Akuna: Uses Dragon Claw on Wild Boar, dealing 30 damage. Wild Boar is now at 140/200.
+    Lyra: Heals Akuna for 30 health. Akuna is now at 155/150 (maxed out).
+
+Enemy Action:
+
+    Bandit Leader 💀: Strikes Jop for 20 damage. Jop is now at 50/100.
+    Bandit Archer 🏹: Shoots at Lyra, dealing 15 damage. Lyra is now at 65/80.
+    Wild Boar 🦛: Charges at Akuna, dealing 30 damage. Akuna is now at 125/150.
+
+The system continues this flow until the enemy or party members are defeated.
+
+This combat system ensures that each action has meaningful consequences and creates dynamic, strategic gameplay that is suitable for both single-player and party-based combat. The system is easy to navigate, with clear choices and real-time updates, and is optimized for a text-based experience in an LLM-powered game.
