@@ -1,0 +1,348 @@
+environment: qa
+region: us-west-2
+
+# Infrastructure settings
+infrastructure:
+  instance_type: t3.large
+  min_instances: 2
+  max_instances: 4
+  auto_scaling:
+    enabled: true
+    cpu_threshold: 70
+    memory_threshold: 80
+  load_balancer:
+    ssl_cert: arn:aws:acm:us-west-2:123456789012:certificate/qa-cert
+    health_check_path: /health
+
+# Game server settings
+game_server:
+  max_players_per_instance: 100
+  matchmaking_queue_size: 200
+  dimension_cache_size: 1000
+  effect_processing_threads: 4
+  physics_update_rate: 60
+  network_tick_rate: 30
+  test_scenarios:
+    enabled: true
+    auto_run: true
+    scenarios:
+      - basic_combat
+      - dimension_transitions
+      - large_scale_battles
+      - stress_tests
+  replay_system:
+    enabled: true
+    storage_days: 7
+
+# Performance thresholds
+performance:
+  frame_time_ms: 16.0
+  physics_time_ms: 8.0
+  ai_time_ms: 5.0
+  network_latency_ms: 100.0
+  dimension_transition_ms: 15.0
+  memory_usage_percent: 85
+  cpu_usage_percent: 75
+  ability_metrics:
+    processing_time_ms: 2.0
+    chain_execution_ms: 5.0
+    effect_propagation_ms: 3.0
+    concurrent_limit: 100
+    memory_per_effect_kb: 10
+  dimensional_metrics:
+    stability_calculation_ms: 1.0
+    rift_generation_ms: 4.0
+    transition_effect_ms: 2.0
+    pathfinding_ms: 5.0
+    sync_delay_ms: 10.0
+  profiling:
+    enabled: true
+    sampling_rate: 1.0
+    trace_events: true
+    memory_tracking: true
+    thread_monitoring: true
+    heap_profiling: true
+    cpu_profiling: true
+    specialized_tracking:
+      ability_chains: true
+      dimension_transitions: true
+      effect_propagation: true
+      combat_calculations: true
+      ai_decisions: true
+
+# Monitoring and logging
+monitoring:
+  metrics_interval_seconds: 15
+  log_retention_days: 14
+  log_level: INFO
+  alerts:
+    enabled: true
+    thresholds:
+      cpu_usage: 80
+      memory_usage: 85
+      error_rate: 1
+      ability_processing_ms: 5
+      dimension_stability: 0.3
+      effect_count: 1000
+  dashboards:
+    - performance_metrics
+    - test_results
+    - error_tracking
+    - stability_metrics
+    - ability_metrics
+    - dimension_metrics
+  detailed_logging:
+    combat_events: true
+    dimension_transitions: true
+    ability_calculations: true
+    pathfinding: true
+    ai_decisions: true
+    ability_chains: true
+    effect_propagation: true
+    stability_changes: true
+    rift_generation: true
+
+# Testing features
+testing:
+  automated_tests:
+    enabled: true
+    schedule: "0 */4 * * *"  # Every 4 hours
+    parallel_execution: true
+    max_retries: 3
+    categories:
+      - unit
+      - integration
+      - performance
+      - stress
+      - dimension
+      - ability_mechanics
+    performance_thresholds:
+      ability_processing: 2.0
+      chain_execution: 5.0
+      effect_propagation: 3.0
+      dimension_transition: 15.0
+      pathfinding: 5.0
+  load_testing:
+    enabled: true
+    virtual_users: 50
+    ramp_up_time: 300
+    steady_state_time: 1800
+    scenarios:
+      - combat_intensive
+      - dimension_hopping
+      - mass_movement
+      - ability_chains
+      - effect_propagation
+  chaos_testing:
+    enabled: true
+    schedule: "0 0 * * *"  # Daily at midnight
+    max_duration_minutes: 120
+    cooldown_minutes: 30
+    notification_channels:
+      - slack
+      - email
+    experiments:
+      # Network Chaos
+      network_latency:
+        enabled: true
+        target_services: ["game_server", "dimension_service"]
+        latency_ms: [100, 200, 500]
+        duration_minutes: 10
+        packet_loss_percent: 5
+        jitter_ms: 50
+        
+      network_partition:
+        enabled: true
+        target_services: ["game_server", "dimension_service", "ability_service"]
+        partition_duration_minutes: 5
+        recovery_time_minutes: 2
+        
+      # Resource Chaos
+      cpu_pressure:
+        enabled: true
+        target_services: ["game_server", "combat_service"]
+        load_percentage: [70, 85, 95]
+        duration_minutes: 15
+        
+      memory_pressure:
+        enabled: true
+        target_services: ["game_server", "effect_service"]
+        consumption_percentage: [75, 85, 95]
+        duration_minutes: 15
+        
+      disk_pressure:
+        enabled: true
+        target_services: ["replay_system", "log_service"]
+        fill_percentage: 85
+        duration_minutes: 10
+        
+      # Service Chaos
+      instance_termination:
+        enabled: true
+        target_services: ["game_server"]
+        termination_rate: 1  # instances per experiment
+        min_healthy_instances: 2
+        
+      service_restart:
+        enabled: true
+        target_services: ["dimension_service", "ability_service"]
+        restart_interval_minutes: 30
+        max_concurrent_restarts: 1
+        
+      # Game Mechanics Chaos
+      ability_spam:
+        enabled: true
+        concurrent_abilities: 100
+        ability_types: ["void", "ethereal", "primordial"]
+        target_area_size: 1000
+        duration_minutes: 5
+        
+      dimension_instability:
+        enabled: true
+        max_concurrent_rifts: 50
+        stability_threshold: 0.2
+        affected_dimensions: ["Physical", "Ethereal", "Void"]
+        duration_minutes: 10
+        
+      mass_transition:
+        enabled: true
+        concurrent_transitions: 200
+        transition_interval_ms: 100
+        affected_dimensions: ["all"]
+        duration_minutes: 5
+        
+      effect_storm:
+        enabled: true
+        effect_types: ["all"]
+        max_concurrent_effects: 1000
+        effect_duration_seconds: 30
+        target_area_size: 2000
+        
+      combat_surge:
+        enabled: true
+        concurrent_combat_instances: 500
+        ability_usage_rate: 100  # per second
+        dimension_shift_rate: 50  # per second
+        duration_minutes: 5
+        
+    recovery_validation:
+      enabled: true
+      checks:
+        - service_health
+        - dimension_stability
+        - effect_cleanup
+        - combat_resolution
+        - data_consistency
+      timeout_minutes: 15
+      
+    metrics_collection:
+      enabled: true
+      interval_seconds: 1
+      metrics:
+        - cpu_usage
+        - memory_usage
+        - network_latency
+        - error_rate
+        - dimension_stability
+        - effect_count
+        - combat_resolution_time
+        - ability_processing_time
+        
+    failure_injection:
+      enabled: true
+      types:
+        - service_crash
+        - memory_leak
+        - cpu_deadlock
+        - network_corruption
+        - data_corruption
+      max_concurrent_failures: 2
+      
+    auto_remediation:
+      enabled: true
+      strategies:
+        - service_restart
+        - cache_flush
+        - connection_reset
+        - state_rebuild
+      max_attempts: 3
+
+# Feature flags
+features:
+  enable_dimensional_combat: true
+  enable_advanced_physics: true
+  enable_ai_behaviors: true
+  max_concurrent_dimensions: 5
+  enable_performance_logging: true
+  debug_mode: false
+  qa_tools:
+    test_runner: true
+    scenario_editor: true
+    metrics_viewer: true
+    replay_analyzer: true
+
+# Database
+database:
+  instance_class: db.t3.medium
+  storage_gb: 100
+  backup_retention_days: 7
+  read_replica:
+    enabled: true
+    count: 1
+
+# Cache
+cache:
+  instance_class: cache.t3.small
+  num_shards: 2
+  memory_gb: 4
+
+# Security
+security:
+  enable_ddos_protection: true
+  enable_waf: true
+  allowed_origins:
+    - https://qa.elysiannexus.com
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 1000
+  auth:
+    mock_enabled: false
+    test_accounts: true
+
+# Networking
+networking:
+  vpc_cidr: 10.1.0.0/16
+  public_subnets:
+    - 10.1.1.0/24
+    - 10.1.2.0/24
+  private_subnets:
+    - 10.1.3.0/24
+    - 10.1.4.0/24
+
+# QA Tools
+qa_tools:
+  test_execution:
+    enabled: true
+    parallel_threads: 4
+    result_retention_days: 14
+  performance_analysis:
+    enabled: true
+    metrics_retention_days: 30
+    alert_thresholds:
+      response_time_ms: 100
+      error_rate_percent: 1
+      ability_processing_ms: 5
+      dimension_stability: 0.3
+    specialized_metrics:
+      ability_chains:
+        execution_time: true
+        success_rate: true
+        effect_count: true
+      dimension_mechanics:
+        stability_trend: true
+        transition_success: true
+        rift_count: true
+      combat_system:
+        dps_calculation: true
+        effect_stacking: true
+        ability_balance: true 

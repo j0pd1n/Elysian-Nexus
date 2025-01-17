@@ -1,0 +1,153 @@
+environment: production
+region: us-west-2
+
+# Infrastructure settings
+infrastructure:
+  instance_type: c5.xlarge
+  min_instances: 4
+  max_instances: 12
+  auto_scaling:
+    cpu_threshold: 60
+    memory_threshold: 70
+  load_balancer:
+    ssl_cert: arn:aws:acm:us-west-2:123456789012:certificate/production-cert
+    health_check_path: /health
+  disaster_recovery:
+    backup_region: us-east-1
+    rto_hours: 1
+    rpo_minutes: 15
+
+# Game server settings
+game_server:
+  max_players_per_instance: 200
+  matchmaking_queue_size: 500
+  dimension_cache_size: 2000
+  effect_processing_threads: 8
+  physics_update_rate: 60
+  network_tick_rate: 60
+  session_persistence: true
+  cross_region_matchmaking: true
+
+# Performance thresholds
+performance:
+  frame_time_ms: 16.0
+  physics_time_ms: 5.0
+  ai_time_ms: 3.0
+  network_latency_ms: 50.0
+  dimension_transition_ms: 8.0
+  memory_usage_percent: 75
+  cpu_usage_percent: 65
+  gc_pause_ms: 10.0
+
+# Monitoring and logging
+monitoring:
+  metrics_interval_seconds: 30
+  log_retention_days: 90
+  alerts:
+    cpu_threshold: 80
+    memory_threshold: 85
+    error_rate_threshold: 1
+    latency_threshold_ms: 100
+    pager_duty_integration: true
+  dashboards:
+    - performance_metrics
+    - player_statistics
+    - dimension_stability
+    - system_health
+    - security_events
+    - business_metrics
+  distributed_tracing:
+    enabled: true
+    sampling_rate: 0.1
+
+# Feature flags
+features:
+  enable_dimensional_combat: true
+  enable_advanced_physics: true
+  enable_ai_behaviors: true
+  max_concurrent_dimensions: 10
+  enable_performance_logging: true
+  enable_advanced_analytics: true
+  debug_mode: false
+  maintenance_mode: false
+
+# Database
+database:
+  instance_class: db.r5.xlarge
+  storage_gb: 500
+  backup_retention_days: 35
+  read_replicas: 3
+  multi_az: true
+  performance_insights: true
+  encryption:
+    at_rest: true
+    in_transit: true
+
+# Cache
+cache:
+  instance_class: cache.r5.xlarge
+  num_shards: 4
+  memory_gb: 16
+  encryption:
+    at_rest: true
+    in_transit: true
+
+# Security
+security:
+  enable_ddos_protection: true
+  enable_waf: true
+  enable_shield_advanced: true
+  enable_guard_duty: true
+  allowed_origins:
+    - https://elysian-nexus.com
+    - https://www.elysian-nexus.com
+  rate_limiting:
+    requests_per_minute: 2000
+    burst: 100
+  ssl_policy: ELBSecurityPolicy-TLS-1-2-2017-01
+  security_headers:
+    hsts_enabled: true
+    csp_enabled: true
+    xss_protection: true
+
+# Networking
+networking:
+  vpc_cidr: 10.0.0.0/16
+  public_subnets:
+    - 10.0.1.0/24
+    - 10.0.2.0/24
+    - 10.0.3.0/24
+  private_subnets:
+    - 10.0.4.0/24
+    - 10.0.5.0/24
+    - 10.0.6.0/24
+  nat_gateways: 3
+  transit_gateway:
+    enabled: true
+    routes:
+      - cidr: 172.16.0.0/16
+        description: "VPN Network"
+
+# CDN and Edge Computing
+cdn:
+  enabled: true
+  price_class: PriceClass_All
+  ssl_certificate_arn: arn:aws:acm:us-east-1:123456789012:certificate/cdn-cert
+  edge_locations:
+    - us-east-1
+    - us-west-2
+    - eu-west-1
+    - ap-northeast-1
+
+# Analytics and Telemetry
+analytics:
+  enabled: true
+  retention_days: 365
+  real_time_processing: true
+  batch_processing:
+    interval_minutes: 5
+  custom_metrics:
+    - dimension_stability
+    - player_engagement
+    - combat_statistics
+    - performance_metrics 

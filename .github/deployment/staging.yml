@@ -1,0 +1,90 @@
+environment: staging
+region: us-west-2
+
+# Infrastructure settings
+infrastructure:
+  instance_type: t3.medium
+  min_instances: 2
+  max_instances: 4
+  auto_scaling:
+    cpu_threshold: 70
+    memory_threshold: 80
+  load_balancer:
+    ssl_cert: arn:aws:acm:us-west-2:123456789012:certificate/staging-cert
+    health_check_path: /health
+
+# Game server settings
+game_server:
+  max_players_per_instance: 100
+  matchmaking_queue_size: 200
+  dimension_cache_size: 1000
+  effect_processing_threads: 4
+  physics_update_rate: 60
+  network_tick_rate: 30
+
+# Performance thresholds
+performance:
+  frame_time_ms: 16.0
+  physics_time_ms: 8.0
+  ai_time_ms: 5.0
+  network_latency_ms: 100.0
+  dimension_transition_ms: 10.0
+  memory_usage_percent: 80
+  cpu_usage_percent: 70
+
+# Monitoring and logging
+monitoring:
+  metrics_interval_seconds: 60
+  log_retention_days: 14
+  alerts:
+    cpu_threshold: 85
+    memory_threshold: 90
+    error_rate_threshold: 5
+    latency_threshold_ms: 200
+  dashboards:
+    - performance_metrics
+    - player_statistics
+    - dimension_stability
+    - system_health
+
+# Feature flags
+features:
+  enable_dimensional_combat: true
+  enable_advanced_physics: true
+  enable_ai_behaviors: true
+  max_concurrent_dimensions: 5
+  enable_performance_logging: true
+  debug_mode: false
+
+# Database
+database:
+  instance_class: db.t3.medium
+  storage_gb: 100
+  backup_retention_days: 7
+  read_replicas: 1
+
+# Cache
+cache:
+  instance_class: cache.t3.medium
+  num_shards: 2
+  memory_gb: 4
+
+# Security
+security:
+  enable_ddos_protection: true
+  enable_waf: true
+  allowed_origins:
+    - https://staging.elysian-nexus.com
+  rate_limiting:
+    requests_per_minute: 1000
+    burst: 50
+
+# Networking
+networking:
+  vpc_cidr: 10.0.0.0/16
+  public_subnets:
+    - 10.0.1.0/24
+    - 10.0.2.0/24
+  private_subnets:
+    - 10.0.3.0/24
+    - 10.0.4.0/24 

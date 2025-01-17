@@ -1,0 +1,164 @@
+environment: development
+region: us-west-2
+
+# Infrastructure settings
+infrastructure:
+  instance_type: t3.medium
+  min_instances: 1
+  max_instances: 2
+  auto_scaling:
+    enabled: false
+  load_balancer:
+    ssl_cert: arn:aws:acm:us-west-2:123456789012:certificate/dev-cert
+    health_check_path: /health
+
+# Game server settings
+game_server:
+  max_players_per_instance: 50
+  matchmaking_queue_size: 100
+  dimension_cache_size: 500
+  effect_processing_threads: 2
+  physics_update_rate: 60
+  network_tick_rate: 30
+  hot_reload:
+    enabled: true
+    watch_paths:
+      - src/combat_system
+      - src/world
+      - src/abilities
+  debug_features:
+    ability_visualization: true
+    dimension_boundaries: true
+    effect_propagation: true
+    combat_logging: true
+    performance_overlay: true
+
+# Performance thresholds
+performance:
+  frame_time_ms: 32.0  # More lenient for development
+  physics_time_ms: 16.0
+  ai_time_ms: 10.0
+  network_latency_ms: 200.0
+  dimension_transition_ms: 20.0
+  memory_usage_percent: 90
+  cpu_usage_percent: 80
+  profiling:
+    enabled: true
+    sampling_rate: 1.0
+    trace_events: true
+    memory_tracking: true
+    thread_monitoring: true
+
+# Monitoring and logging
+monitoring:
+  metrics_interval_seconds: 30
+  log_retention_days: 7
+  log_level: DEBUG
+  alerts:
+    enabled: false
+  dashboards:
+    - performance_metrics
+    - dimension_stability
+    - debug_metrics
+  debug_logging:
+    combat_events: true
+    dimension_transitions: true
+    ability_calculations: true
+    effect_propagation: true
+    stability_changes: true
+
+# Feature flags
+features:
+  enable_dimensional_combat: true
+  enable_advanced_physics: true
+  enable_ai_behaviors: true
+  max_concurrent_dimensions: 3
+  enable_performance_logging: true
+  debug_mode: true
+  dev_tools:
+    dimension_editor: true
+    ability_creator: true
+    effect_visualizer: true
+    state_inspector: true
+    combat_simulator: true
+
+# Database
+database:
+  instance_class: db.t3.small
+  storage_gb: 20
+  backup_retention_days: 1
+  migrations:
+    auto_apply: true
+    rollback_enabled: true
+
+# Cache
+cache:
+  instance_class: cache.t3.micro
+  num_shards: 1
+  memory_gb: 1
+  local_cache:
+    enabled: true
+    size_mb: 512
+
+# Security
+security:
+  enable_ddos_protection: false
+  enable_waf: false
+  allowed_origins:
+    - http://localhost:3000
+    - http://localhost:8080
+  rate_limiting:
+    enabled: false
+  cors:
+    allow_all: true
+  auth:
+    mock_enabled: true
+    test_accounts: true
+
+# Networking
+networking:
+  vpc_cidr: 10.0.0.0/16
+  public_subnets:
+    - 10.0.1.0/24
+  private_subnets:
+    - 10.0.2.0/24
+
+# Development Tools
+dev_tools:
+  hot_reload:
+    enabled: true
+    watch_extensions:
+      - .py
+      - .json
+      - .yml
+  debugger:
+    enabled: true
+    port: 5678
+    wait_on_start: true
+  profiler:
+    enabled: true
+    interval_seconds: 30
+  test_automation:
+    enabled: true
+    watch_mode: true
+    parallel_execution: true
+  metrics_dashboard:
+    enabled: true
+    port: 8081
+    update_interval_seconds: 1
+
+# Testing
+testing:
+  mock_services:
+    enabled: true
+    response_delay_ms: 100
+  test_data:
+    auto_generate: true
+    scenarios:
+      - basic_combat
+      - dimension_transitions
+      - ability_chains
+  performance_testing:
+    enabled: true
+    virtual_users: 10
+    record_traces: true 
