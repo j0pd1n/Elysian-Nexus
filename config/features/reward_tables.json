@@ -1,0 +1,137 @@
+{
+    "item_pools": {
+        "dimensional_artifacts": {
+            "tier_1": [
+                {
+                    "id": "ethereal_shard",
+                    "weight": 100,
+                    "quantity": {"min": 1, "max": 3}
+                },
+                {
+                    "id": "void_crystal",
+                    "weight": 80,
+                    "quantity": {"min": 1, "max": 2}
+                },
+                {
+                    "id": "celestial_dust",
+                    "weight": 60,
+                    "quantity": {"min": 1, "max": 2}
+                }
+            ],
+            "tier_2": [
+                {
+                    "id": "dimensional_compass",
+                    "weight": 50,
+                    "quantity": {"min": 1, "max": 1}
+                },
+                {
+                    "id": "ethereal_focus",
+                    "weight": 40,
+                    "quantity": {"min": 1, "max": 1}
+                }
+            ],
+            "tier_3": [
+                {
+                    "id": "dimensional_resonator",
+                    "weight": 20,
+                    "quantity": {"min": 1, "max": 1}
+                },
+                {
+                    "id": "void_beacon",
+                    "weight": 15,
+                    "quantity": {"min": 1, "max": 1}
+                }
+            ]
+        },
+        "crafting_materials": {
+            "common": [
+                {
+                    "id": "iron_ore",
+                    "weight": 100,
+                    "quantity": {"min": 3, "max": 8}
+                },
+                {
+                    "id": "timber",
+                    "weight": 100,
+                    "quantity": {"min": 5, "max": 10}
+                }
+            ],
+            "rare": [
+                {
+                    "id": "ethereal_essence",
+                    "weight": 60,
+                    "quantity": {"min": 1, "max": 3}
+                },
+                {
+                    "id": "void_essence",
+                    "weight": 40,
+                    "quantity": {"min": 1, "max": 2}
+                }
+            ]
+        }
+    },
+    "experience_tables": {
+        "main_story": {
+            "base": 1000,
+            "level_scaling": 0.1,
+            "difficulty_multipliers": {
+                "easy": 0.8,
+                "normal": 1.0,
+                "hard": 1.2
+            }
+        },
+        "side_quests": {
+            "base": 500,
+            "level_scaling": 0.05,
+            "difficulty_multipliers": {
+                "easy": 0.9,
+                "normal": 1.0,
+                "hard": 1.1
+            }
+        }
+    },
+    "currency_tables": {
+        "main_story": {
+            "base": 500,
+            "level_scaling": 0.15,
+            "difficulty_multipliers": {
+                "easy": 0.8,
+                "normal": 1.0,
+                "hard": 1.2
+            }
+        },
+        "side_quests": {
+            "base": 250,
+            "level_scaling": 0.1,
+            "difficulty_multipliers": {
+                "easy": 0.9,
+                "normal": 1.0,
+                "hard": 1.1
+            }
+        }
+    },
+    "reputation_tables": {
+        "mystics": {
+            "base": 100,
+            "level_scaling": 0.05,
+            "standing_multipliers": {
+                "neutral": 1.0,
+                "friendly": 1.1,
+                "honored": 1.2,
+                "revered": 1.3,
+                "exalted": 1.5
+            }
+        },
+        "warriors": {
+            "base": 100,
+            "level_scaling": 0.05,
+            "standing_multipliers": {
+                "neutral": 1.0,
+                "friendly": 1.1,
+                "honored": 1.2,
+                "revered": 1.3,
+                "exalted": 1.5
+            }
+        }
+    }
+} 

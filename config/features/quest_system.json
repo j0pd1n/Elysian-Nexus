@@ -1,0 +1,182 @@
+{
+    "quest_categories": {
+        "main_story": {
+            "display_name": "Main Story Quests",
+            "min_level": 1,
+            "max_concurrent": 1,
+            "rewards_multiplier": 1.5,
+            "dimensional_requirements": true,
+            "failure_consequences": true
+        },
+        "side_quests": {
+            "display_name": "Side Quests",
+            "min_level": 1,
+            "max_concurrent": 5,
+            "rewards_multiplier": 1.0,
+            "dimensional_requirements": false,
+            "failure_consequences": false
+        },
+        "dimensional_tasks": {
+            "display_name": "Dimensional Tasks",
+            "min_level": 10,
+            "max_concurrent": 3,
+            "rewards_multiplier": 1.2,
+            "dimensional_requirements": true,
+            "failure_consequences": true
+        },
+        "daily_missions": {
+            "display_name": "Daily Missions",
+            "min_level": 5,
+            "max_concurrent": 3,
+            "rewards_multiplier": 0.8,
+            "dimensional_requirements": false,
+            "failure_consequences": false,
+            "reset_period": "daily"
+        }
+    },
+    "objective_types": {
+        "kill": {
+            "display_name": "Defeat Enemies",
+            "tracking_type": "counter",
+            "progress_display": "numeric",
+            "allows_partial": true
+        },
+        "collect": {
+            "display_name": "Collect Items",
+            "tracking_type": "inventory",
+            "progress_display": "numeric",
+            "allows_partial": true
+        },
+        "explore": {
+            "display_name": "Explore Location",
+            "tracking_type": "location",
+            "progress_display": "percentage",
+            "allows_partial": true
+        },
+        "interact": {
+            "display_name": "Interact with NPC",
+            "tracking_type": "flag",
+            "progress_display": "checkbox",
+            "allows_partial": false
+        },
+        "craft": {
+            "display_name": "Craft Items",
+            "tracking_type": "counter",
+            "progress_display": "numeric",
+            "allows_partial": true
+        },
+        "dimensional_shift": {
+            "display_name": "Shift Dimensions",
+            "tracking_type": "counter",
+            "progress_display": "numeric",
+            "allows_partial": true
+        }
+    },
+    "reward_types": {
+        "experience": {
+            "display_name": "Experience Points",
+            "scaling_factor": 1.0,
+            "level_multiplier": 0.1
+        },
+        "currency": {
+            "display_name": "Gold",
+            "scaling_factor": 1.0,
+            "level_multiplier": 0.15
+        },
+        "items": {
+            "display_name": "Items",
+            "quality_chances": {
+                "common": 0.6,
+                "rare": 0.3,
+                "epic": 0.08,
+                "legendary": 0.02
+            }
+        },
+        "reputation": {
+            "display_name": "Faction Reputation",
+            "scaling_factor": 0.5,
+            "level_multiplier": 0.05
+        },
+        "dimensional_energy": {
+            "display_name": "Dimensional Energy",
+            "scaling_factor": 0.3,
+            "level_multiplier": 0.08
+        }
+    },
+    "progression": {
+        "quest_chain_requirements": {
+            "main_story": {
+                "level_gates": [1, 10, 20, 30, 40, 50],
+                "reputation_gates": {
+                    "mystics": 1000,
+                    "warriors": 500
+                }
+            },
+            "dimensional_tasks": {
+                "level_gates": [10, 20, 30],
+                "mastery_gates": {
+                    "dimensional": 100,
+                    "combat": 50
+                }
+            }
+        },
+        "reputation_thresholds": {
+            "neutral": 0,
+            "friendly": 1000,
+            "honored": 3000,
+            "revered": 6000,
+            "exalted": 10000
+        }
+    },
+    "quest_ui": {
+        "map_markers": {
+            "main_story": {
+                "icon": "quest_main",
+                "color": "#FFD700",
+                "size": 32
+            },
+            "side_quests": {
+                "icon": "quest_side",
+                "color": "#C0C0C0",
+                "size": 24
+            },
+            "dimensional_tasks": {
+                "icon": "quest_dimensional",
+                "color": "#8A2BE2",
+                "size": 28
+            },
+            "daily_missions": {
+                "icon": "quest_daily",
+                "color": "#00FF00",
+                "size": 20
+            }
+        },
+        "quest_log": {
+            "sort_options": ["level", "progress", "rewards", "type"],
+            "filter_options": ["active", "completed", "failed", "available"],
+            "display_count": 20
+        }
+    },
+    "notifications": {
+        "quest_available": {
+            "display_duration": 5,
+            "sound_effect": "quest_available",
+            "priority": "low"
+        },
+        "quest_complete": {
+            "display_duration": 8,
+            "sound_effect": "quest_complete",
+            "priority": "medium"
+        },
+        "quest_failed": {
+            "display_duration": 8,
+            "sound_effect": "quest_failed",
+            "priority": "high"
+        },
+        "objective_progress": {
+            "display_duration": 3,
+            "sound_effect": "objective_update",
+            "priority": "low"
+        }
+    }
+} 

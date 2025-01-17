@@ -1,0 +1,189 @@
+{
+    "chain_id": "main_story_chapter_two",
+    "display_name": "Chapter Two: The Void Beckons",
+    "prerequisites": {
+        "player_level": 5,
+        "quests_completed": ["ms_ch1_dimensional_crafting"],
+        "dimensional_energy": 100,
+        "reputation": {
+            "mystics": 1000
+        }
+    },
+    "quests": [
+        {
+            "quest_id": "ms_ch2_void_calling",
+            "title": "Echoes of the Void",
+            "description": "Investigate the mysterious void energies manifesting in the Ethereal Sanctuary.",
+            "objectives": [
+                {
+                    "type": "explore",
+                    "target": "void_breach_site",
+                    "description": "Locate the void breach",
+                    "progress_type": "percentage",
+                    "required_progress": 100
+                },
+                {
+                    "type": "collect",
+                    "target": "void_residue",
+                    "quantity": 5,
+                    "description": "Collect void residue samples"
+                }
+            ],
+            "rewards": {
+                "experience": 2500,
+                "currency": 1200,
+                "items": [
+                    {
+                        "id": "void_crystal",
+                        "quality": "rare",
+                        "quantity": 3
+                    }
+                ],
+                "dimensional_energy": 75
+            }
+        },
+        {
+            "quest_id": "ms_ch2_void_stabilizer",
+            "title": "Stabilizing the Breach",
+            "prerequisites": {
+                "quest_completed": "ms_ch2_void_calling"
+            },
+            "objectives": [
+                {
+                    "type": "craft",
+                    "target": "void_stabilizer",
+                    "quantity": 1,
+                    "description": "Craft a Void Stabilizer"
+                },
+                {
+                    "type": "interact",
+                    "target": "void_breach",
+                    "description": "Install the Void Stabilizer"
+                }
+            ],
+            "rewards": {
+                "experience": 3000,
+                "currency": 1500,
+                "items": [
+                    {
+                        "id": "void_attuned_focus",
+                        "quality": "rare",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "void_walkers",
+                    "amount": 500
+                }
+            }
+        },
+        {
+            "quest_id": "ms_ch2_void_exploration",
+            "title": "Into the Unknown",
+            "prerequisites": {
+                "quest_completed": "ms_ch2_void_stabilizer",
+                "player_level": 7
+            },
+            "objectives": [
+                {
+                    "type": "dimensional_shift",
+                    "target": "void_dimension",
+                    "description": "Enter the Void dimension"
+                },
+                {
+                    "type": "explore",
+                    "target": "void_outpost",
+                    "description": "Discover the Void Walkers' outpost",
+                    "progress_type": "percentage",
+                    "required_progress": 100
+                },
+                {
+                    "type": "interact",
+                    "target": "void_sage",
+                    "description": "Meet with the Void Sage"
+                }
+            ],
+            "rewards": {
+                "experience": 3500,
+                "currency": 1800,
+                "items": [
+                    {
+                        "id": "void_walker_emblem",
+                        "quality": "epic",
+                        "quantity": 1
+                    }
+                ],
+                "dimensional_energy": 150,
+                "reputation": {
+                    "faction": "void_walkers",
+                    "amount": 750
+                }
+            }
+        },
+        {
+            "quest_id": "ms_ch2_void_mastery",
+            "title": "Mastery of the Void",
+            "prerequisites": {
+                "quest_completed": "ms_ch2_void_exploration",
+                "player_level": 8
+            },
+            "objectives": [
+                {
+                    "type": "kill",
+                    "target": "void_entities",
+                    "quantity": 10,
+                    "description": "Defeat Void entities"
+                },
+                {
+                    "type": "collect",
+                    "target": "void_essence",
+                    "quantity": 5,
+                    "description": "Collect Void essence"
+                },
+                {
+                    "type": "craft",
+                    "target": "void_infused_weapon",
+                    "quantity": 1,
+                    "description": "Craft a Void-infused weapon"
+                }
+            ],
+            "rewards": {
+                "experience": 4000,
+                "currency": 2000,
+                "items": [
+                    {
+                        "id": "void_mastery_tome",
+                        "quality": "epic",
+                        "quantity": 1
+                    }
+                ],
+                "dimensional_energy": 200,
+                "reputation": {
+                    "faction": "void_walkers",
+                    "amount": 1000
+                }
+            }
+        }
+    ],
+    "chain_completion_rewards": {
+        "experience": 10000,
+        "currency": 5000,
+        "reputation": {
+            "faction": "void_walkers",
+            "amount": 2000
+        },
+        "items": [
+            {
+                "id": "void_walker_armor_set",
+                "quality": "epic",
+                "quantity": 1
+            },
+            {
+                "id": "void_beacon",
+                "quality": "epic",
+                "quantity": 1
+            }
+        ],
+        "dimensional_energy": 500
+    }
+} 

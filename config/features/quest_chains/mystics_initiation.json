@@ -1,0 +1,214 @@
+{
+    "chain_id": "mystics_initiation",
+    "display_name": "Path of the Mystic",
+    "chain_type": "faction",
+    "prerequisites": {
+        "player_level": 5,
+        "quests_completed": ["ms_ch1_dimensional_crafting"],
+        "dimensional_energy": 100,
+        "reputation": {
+            "mystics": 500
+        }
+    },
+    "quests": [
+        {
+            "quest_id": "my_aether_attunement",
+            "title": "Aetheric Awakening",
+            "description": "Begin your journey into the mystical arts by attuning to the aetheric currents.",
+            "objectives": [
+                {
+                    "type": "explore",
+                    "target": "mystic_sanctum",
+                    "description": "Find the Mystic Sanctum",
+                    "progress_type": "percentage",
+                    "required_progress": 100
+                },
+                {
+                    "type": "collect",
+                    "target": "aether_crystal",
+                    "quantity": 5,
+                    "description": "Gather Aether Crystals"
+                },
+                {
+                    "type": "interact",
+                    "target": "aether_font",
+                    "description": "Attune to the Aether Font"
+                }
+            ],
+            "rewards": {
+                "experience": 2500,
+                "currency": 1200,
+                "items": [
+                    {
+                        "id": "mystic_apprentice_robes",
+                        "quality": "rare",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "mystics",
+                    "amount": 750
+                }
+            }
+        },
+        {
+            "quest_id": "my_dimensional_sight",
+            "title": "Eyes of the Veil",
+            "prerequisites": {
+                "quest_completed": "my_aether_attunement",
+                "player_level": 6
+            },
+            "objectives": [
+                {
+                    "type": "craft",
+                    "target": "dimensional_lens",
+                    "quantity": 1,
+                    "description": "Craft a Dimensional Lens"
+                },
+                {
+                    "type": "explore",
+                    "target": "dimensional_rifts",
+                    "description": "Study Dimensional Rifts",
+                    "progress_type": "counter",
+                    "required_progress": 3
+                },
+                {
+                    "type": "collect",
+                    "target": "rift_essence",
+                    "quantity": 3,
+                    "description": "Collect Rift Essence samples"
+                }
+            ],
+            "rewards": {
+                "experience": 3000,
+                "currency": 1500,
+                "items": [
+                    {
+                        "id": "mystic_sight_charm",
+                        "quality": "rare",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "mystics",
+                    "amount": 1000
+                }
+            }
+        },
+        {
+            "quest_id": "my_energy_weaving",
+            "title": "Weaver of Realities",
+            "prerequisites": {
+                "quest_completed": "my_dimensional_sight",
+                "player_level": 7
+            },
+            "objectives": [
+                {
+                    "type": "craft",
+                    "target": "reality_thread",
+                    "quantity": 3,
+                    "description": "Weave Reality Threads"
+                },
+                {
+                    "type": "dimensional_shift",
+                    "target": "ethereal_workshop",
+                    "description": "Access the Ethereal Workshop"
+                },
+                {
+                    "type": "interact",
+                    "target": "master_weaver",
+                    "description": "Learn from the Master Weaver"
+                }
+            ],
+            "rewards": {
+                "experience": 3500,
+                "currency": 1800,
+                "items": [
+                    {
+                        "id": "reality_weavers_gloves",
+                        "quality": "epic",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "mystics",
+                    "amount": 1500
+                }
+            }
+        },
+        {
+            "quest_id": "my_mystic_mastery",
+            "title": "Mystic Ascendance",
+            "prerequisites": {
+                "quest_completed": "my_energy_weaving",
+                "player_level": 9
+            },
+            "objectives": [
+                {
+                    "type": "craft",
+                    "target": "mystic_focus",
+                    "quantity": 1,
+                    "description": "Craft your Mystic Focus"
+                },
+                {
+                    "type": "dimensional_shift",
+                    "target": ["ethereal_plane", "astral_realm", "nexus_core"],
+                    "description": "Harmonize with Multiple Dimensions",
+                    "progress_type": "counter",
+                    "required_progress": 3
+                },
+                {
+                    "type": "interact",
+                    "target": "mystic_council",
+                    "description": "Present yourself to the Mystic Council"
+                }
+            ],
+            "rewards": {
+                "experience": 4500,
+                "currency": 2200,
+                "items": [
+                    {
+                        "id": "mystic_master_staff",
+                        "quality": "epic",
+                        "quantity": 1
+                    },
+                    {
+                        "id": "dimensional_resonance_crystal",
+                        "quality": "epic",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "mystics",
+                    "amount": 2000
+                }
+            }
+        }
+    ],
+    "chain_completion_rewards": {
+        "experience": 10000,
+        "currency": 5000,
+        "reputation": {
+            "faction": "mystics",
+            "amount": 3000
+        },
+        "items": [
+            {
+                "id": "mystic_master_title",
+                "quality": "legendary",
+                "quantity": 1
+            },
+            {
+                "id": "reality_anchor",
+                "quality": "epic",
+                "quantity": 1
+            }
+        ],
+        "dimensional_energy": 500,
+        "unlocks": {
+            "vendor_access": "mystic_master_supplies",
+            "daily_quests": "mystic_research_tasks",
+            "abilities": ["dimensional_sight", "reality_weave"]
+        }
+    }
+} 

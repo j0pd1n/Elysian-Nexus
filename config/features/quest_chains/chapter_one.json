@@ -1,0 +1,118 @@
+{
+    "chain_id": "main_story_chapter_one",
+    "display_name": "Chapter One: The Dimensional Awakening",
+    "prerequisites": {
+        "player_level": 1,
+        "quests_completed": [],
+        "dimensional_energy": 0
+    },
+    "quests": [
+        {
+            "quest_id": "ms_ch1_awakening",
+            "title": "The First Shift",
+            "description": "Experience your first dimensional shift as your powers awaken.",
+            "objectives": [
+                {
+                    "type": "interact",
+                    "target": "mystic_mentor",
+                    "description": "Speak with the Mystic Mentor"
+                },
+                {
+                    "type": "dimensional_shift",
+                    "target": "ethereal_plane",
+                    "description": "Complete your first dimensional shift"
+                }
+            ],
+            "rewards": {
+                "experience": 1000,
+                "currency": 500,
+                "items": [
+                    {
+                        "id": "dimensional_compass",
+                        "quality": "rare",
+                        "quantity": 1
+                    }
+                ],
+                "dimensional_energy": 50
+            }
+        },
+        {
+            "quest_id": "ms_ch1_first_steps",
+            "title": "Steps Between Worlds",
+            "prerequisites": {
+                "quest_completed": "ms_ch1_awakening"
+            },
+            "objectives": [
+                {
+                    "type": "explore",
+                    "target": "ethereal_sanctuary",
+                    "description": "Explore the Ethereal Sanctuary",
+                    "progress_type": "percentage",
+                    "required_progress": 100
+                },
+                {
+                    "type": "collect",
+                    "target": "ethereal_essence",
+                    "quantity": 5,
+                    "description": "Collect Ethereal Essence"
+                }
+            ],
+            "rewards": {
+                "experience": 1500,
+                "currency": 750,
+                "reputation": {
+                    "faction": "mystics",
+                    "amount": 100
+                }
+            }
+        },
+        {
+            "quest_id": "ms_ch1_dimensional_crafting",
+            "title": "Crafting Between Realms",
+            "prerequisites": {
+                "quest_completed": "ms_ch1_first_steps",
+                "player_level": 3
+            },
+            "objectives": [
+                {
+                    "type": "interact",
+                    "target": "master_craftsman",
+                    "description": "Learn about Dimensional Crafting"
+                },
+                {
+                    "type": "craft",
+                    "target": "ethereal_focus",
+                    "quantity": 1,
+                    "description": "Craft your first Ethereal Focus"
+                }
+            ],
+            "rewards": {
+                "experience": 2000,
+                "currency": 1000,
+                "items": [
+                    {
+                        "id": "crafting_manual_dimensional",
+                        "quality": "rare",
+                        "quantity": 1
+                    }
+                ],
+                "dimensional_energy": 100
+            }
+        }
+    ],
+    "chain_completion_rewards": {
+        "experience": 5000,
+        "currency": 2500,
+        "reputation": {
+            "faction": "mystics",
+            "amount": 500
+        },
+        "items": [
+            {
+                "id": "dimensional_resonator",
+                "quality": "epic",
+                "quantity": 1
+            }
+        ]
+    }
+} 

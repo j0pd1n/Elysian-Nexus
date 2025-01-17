@@ -1,1 +1,5 @@
-pygame>=2.5.0 
+pillow>=9.0.0  # For image handling
+pygame>=2.1.0  # For sound
+pyyaml>=6.0    # For configuration files
+tqdm>=4.65.0   # For progress bars
+colorama>=0.4.6  # For colored terminal output 

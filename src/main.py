@@ -67,11 +67,10 @@ class TextRedirector:
     def flush(self):
         pass
 
-def update_progress(progress_bar, value, label, root):
-    progress_bar['value'] = value
-    if label:
-        label.config(text=f"Loading... {value}%")
-    root.update()
+def update_progress(progress_bar, value):
+    if progress_bar:
+        progress_bar['value'] = value
+        progress_bar.update()
     time.sleep(0.05)  # Small delay to show progress
 
 def main():
@@ -111,7 +110,7 @@ def main():
         root.geometry(f"{window_width}x{window_height}+{x}+{y}")
         root.configure(bg="black")
         print("Window geometry and properties set")
-        update_progress(debug_progress, 20, None, root)
+        update_progress(debug_progress, 20)
         
         # Create main frame with border
         print("Creating main frame...")
@@ -123,66 +122,17 @@ def main():
         )
         main_frame.pack(expand=True, fill="both", padx=20, pady=20)
         print("Main frame created and packed")
-        update_progress(debug_progress, 40, None, root)
-        
-        # Create loading frame
-        loading_frame = tk.Frame(main_frame, bg="black")
-        loading_frame.pack(expand=True, fill="both")
-        
-        # Add loading label
-        loading_label = tk.Label(
-            loading_frame,
-            text="Loading... 0%",
-            font=("Times New Roman", 24),
-            fg="gold",
-            bg="black"
-        )
-        loading_label.pack(pady=(100, 20))
-        
-        # Add main progress bar
-        style = ttk.Style()
-        style.configure(
-            "Custom.Horizontal.TProgressbar",
-            troughcolor="black",
-            background="gold",
-            bordercolor="gold",
-            lightcolor="gold",
-            darkcolor="gold"
-        )
-        
-        progress_bar = ttk.Progressbar(
-            loading_frame,
-            style="Custom.Horizontal.TProgressbar",
-            mode='determinate',
-            length=400
-        )
-        progress_bar.pack(pady=20)
-        
-        # Add status label
-        status_label = tk.Label(
-            loading_frame,
-            text="Initializing systems...",
-            font=("Times New Roman", 14),
-            fg="gold",
-            bg="black"
-        )
-        status_label.pack(pady=20)
-        
-        root.update()
-        update_progress(debug_progress, 60, loading_label, root)
+        update_progress(debug_progress, 40)
         
         # Initialize the GUI with the main frame
         print("Initializing GUI Menu...")
         try:
-            status_label.config(text="Loading GUI Menu...")
-            update_progress(debug_progress, 80, loading_label, root)
+            update_progress(debug_progress, 80)
             
             # Create the game menu
             gui = GUIMenu(main_frame)
-            update_progress(debug_progress, 100, loading_label, root)
+            update_progress(debug_progress, 100)
             
-            # Remove loading frame
-            loading_frame.destroy()
             print("GUI Menu initialized successfully")
             
             # Start responsiveness checking

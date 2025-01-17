@@ -1,9 +1,13 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Set, Optional
+from typing import Dict, List, Set, Optional, Tuple, Any
 from enum import Enum, auto
-from src.combat_system.dimensional_combat import DimensionalLayer, DimensionalEffect
-from src.character.ability_system import ResourceType, AbilitySystem
-from src.world.difficulty_scaling import PlayerProgression
+from datetime import datetime, timedelta
+import json
+import math
+
+from .ability_system import ResourceType, AbilitySystem
+from ..combat_system.dimensional_combat import DimensionalLayer, DimensionalEffect
+from ..world.difficulty_scaling import PlayerProgression
 
 class StatType(Enum):
     # Core Stats
@@ -34,38 +38,80 @@ class ProgressionPath(Enum):
     VOIDWALKER = auto()  # Void/chaos focus
     PRIMORDIAL = auto()  # Reality manipulation focus
 
-@dataclass
-class StatAllocation:
-    """Represents stat allocation for a level up"""
-    base_stats: Dict[StatType, float]
-    combat_stats: Dict[StatType, float]
-    dimensional_stats: Dict[StatType, float]
+class MasteryType(Enum):
+    """Types of masteries a character can develop"""
+    COMBAT = auto()         # Combat proficiency
+    DIMENSIONAL = auto()    # Dimensional manipulation
+    CRAFTING = auto()       # Item creation and enhancement
+    EXPLORATION = auto()    # World discovery and navigation
+    SOCIAL = auto()         # NPC interactions and influence
+    STEALTH = auto()        # Stealth and subterfuge
+    SURVIVAL = auto()       # Environmental adaptation
+
+class Specialization(Enum):
+    """Advanced specializations within progression paths"""
+    # Warrior specializations
+    BLADE_MASTER = auto()      # Sword combat mastery
+    GUARDIAN = auto()          # Defensive specialist
+    BERSERKER = auto()         # Rage-powered warrior
+    
+    # Mage specializations
+    ELEMENTALIST = auto()      # Elemental magic mastery
+    CHRONOMANCER = auto()      # Time manipulation
+    RUNEWEAVER = auto()        # Rune-based spellcasting
+    
+    # Dimensionist specializations
+    VOID_WALKER = auto()       # Void dimension mastery
+    REALITY_SHAPER = auto()    # Reality manipulation
+    PLANAR_WEAVER = auto()     # Multi-dimensional combat
+    
+    # Hybrid specializations
+    SPELLBLADE = auto()        # Magic-enhanced combat
+    DIMENSIONAL_KNIGHT = auto() # Physical-dimensional hybrid
+    VOID_MAGE = auto()         # Void-magic specialist
 
 @dataclass
-class ProgressionNode:
-    """Represents a node in the progression tree"""
+class MasteryProgress:
+    """Tracks progress in a mastery"""
+    mastery_type: MasteryType
+    level: int = 1
+    experience: float = 0.0
+    milestones_achieved: Set[str] = field(default_factory=set)
+    
+    def get_next_level_requirement(self) -> float:
+        """Calculate experience needed for next level"""
+        return 150.0 * (1.4 ** (self.level - 1))
+
+@dataclass
+class SpecializationNode:
+    """Represents a node in a specialization tree"""
     name: str
     description: str
-    level_requirement: int
-    stat_requirements: Dict[StatType, float]
-    stat_bonuses: Dict[StatType, float]
-    ability_unlock: Optional[str] = None
-    dimension_unlock: Optional[DimensionalLayer] = None
+    specialization: Specialization
+    tier: int
+    requirements: Dict[str, Any]  # Flexible requirements
+    bonuses: Dict[str, Any]       # Flexible bonuses
     is_unlocked: bool = False
+    is_active: bool = False
     
-    def meets_requirements(
-        self,
-        character_level: int,
-        character_stats: Dict[StatType, float]
-    ) -> bool:
-        """Check if requirements are met"""
-        if character_level < self.level_requirement:
-            return False
-            
-        for stat, req in self.stat_requirements.items():
-            if stat not in character_stats or character_stats[stat] < req:
-                return False
-                
+    def meets_requirements(self, character_state: Dict[str, Any]) -> bool:
+        """Check if node requirements are met"""
+        for req_type, req_value in self.requirements.items():
+            if req_type.startswith('stat_'):
+                stat_name = req_type[5:]
+                if character_state.get('stats', {}).get(stat_name, 0) < req_value:
+                    return False
+            elif req_type == 'level':
+                if character_state.get('level', 1) < req_value:
+                    return False
+            elif req_type == 'mastery':
+                mastery_name, mastery_level = req_value
+                if character_state.get('masteries', {}).get(mastery_name, 0) < mastery_level:
+                    return False
+            elif req_type == 'ability':
+                ability_name, ability_rank = req_value
+                if character_state.get('abilities', {}).get(ability_name, 0) < ability_rank:
+                    return False
         return True
 
 class ProgressionSystem:
@@ -77,80 +123,277 @@ class ProgressionSystem:
         self.experience = 0.0
         self.progression_path: Optional[ProgressionPath] = None
         
-        # Initialize stats
-        self.stats: Dict[StatType, float] = {
+        # Enhanced stats system
+        self.base_stats: Dict[StatType, float] = {
             stat: 10.0 for stat in StatType
         }
-        
-        # Initialize resources
-        self.resources: Dict[ResourceType, float] = {
-            ResourceType.HEALTH: 100.0,
-            ResourceType.MANA: 100.0,
-            ResourceType.STAMINA: 100.0,
-            ResourceType.FOCUS: 100.0,
-            ResourceType.DIMENSIONAL_ENERGY: 50.0
+        self.stat_modifiers: Dict[StatType, Dict[str, float]] = {
+            stat: {} for stat in StatType
         }
         
-        # Initialize resource max values
-        self.max_resources: Dict[ResourceType, float] = self.resources.copy()
+        # Mastery system
+        self.masteries: Dict[MasteryType, MasteryProgress] = {
+            mastery: MasteryProgress(mastery) for mastery in MasteryType
+        }
         
-        # Initialize progression trees
-        self.progression_trees: Dict[ProgressionPath, List[ProgressionNode]] = {}
-        self._initialize_progression_trees()
+        # Specialization system
+        self.specializations: Dict[Specialization, List[SpecializationNode]] = {}
+        self.active_specializations: Set[Specialization] = set()
+        self.specialization_points = 0
         
-        # Initialize available dimensions
-        self.available_dimensions: Set[DimensionalLayer] = {DimensionalLayer.PHYSICAL}
+        # Dynamic scaling system
+        self.combat_multipliers: Dict[str, float] = {
+            'damage': 1.0,
+            'defense': 1.0,
+            'healing': 1.0,
+            'resource_regen': 1.0
+        }
         
-    def _initialize_progression_trees(self) -> None:
-        """Initialize progression trees for each path"""
-        # Warrior progression
-        self.progression_trees[ProgressionPath.WARRIOR] = [
-            ProgressionNode(
-                name="Warrior's Path",
-                description="Begin your journey as a warrior",
-                level_requirement=1,
-                stat_requirements={},
-                stat_bonuses={
-                    StatType.STRENGTH: 5.0,
-                    StatType.VITALITY: 3.0
-                }
+        # Achievement and milestone system
+        self.achievements: Set[str] = set()
+        self.milestones: Dict[str, datetime] = {}
+        
+        self._initialize_specialization_trees()
+        
+    def _initialize_specialization_trees(self) -> None:
+        """Initialize all specialization trees"""
+        # Warrior specializations
+        self._init_blade_master_tree()
+        self._init_guardian_tree()
+        self._init_berserker_tree()
+        
+        # Mage specializations
+        self._init_elementalist_tree()
+        self._init_chronomancer_tree()
+        self._init_runeweaver_tree()
+        
+        # Dimensionist specializations
+        self._init_void_walker_tree()
+        self._init_reality_shaper_tree()
+        self._init_planar_weaver_tree()
+        
+        # Hybrid specializations
+        self._init_spellblade_tree()
+        self._init_dimensional_knight_tree()
+        self._init_void_mage_tree()
+
+    def _init_blade_master_tree(self) -> None:
+        """Initialize Blade Master specialization tree"""
+        nodes = [
+            SpecializationNode(
+                name="Way of the Blade",
+                description="Begin your journey as a Blade Master",
+                specialization=Specialization.BLADE_MASTER,
+                tier=1,
+                requirements={'level': 10, 'stat_strength': 15},
+                bonuses={'critical_chance': 0.05, 'physical_power': 10}
             ),
-            # Add more nodes...
-        ]
-        
-        # Mage progression
-        self.progression_trees[ProgressionPath.MAGE] = [
-            ProgressionNode(
-                name="Arcane Initiate",
-                description="Begin your journey as a mage",
-                level_requirement=1,
-                stat_requirements={},
-                stat_bonuses={
-                    StatType.INTELLIGENCE: 5.0,
-                    StatType.WILLPOWER: 3.0
-                }
-            ),
-            # Add more nodes...
-        ]
-        
-        # Dimensionist progression
-        self.progression_trees[ProgressionPath.DIMENSIONIST] = [
-            ProgressionNode(
-                name="Dimensional Awakening",
-                description="Begin your journey as a dimensionist",
-                level_requirement=1,
-                stat_requirements={},
-                stat_bonuses={
-                    StatType.DIMENSIONAL_ATTUNEMENT: 5.0,
-                    StatType.STABILITY_CONTROL: 3.0
+            SpecializationNode(
+                name="Perfect Form",
+                description="Master advanced sword techniques",
+                specialization=Specialization.BLADE_MASTER,
+                tier=2,
+                requirements={
+                    'level': 20,
+                    'mastery': ('COMBAT', 3),
+                    'ability': ('basic_slash', 3)
                 },
-                dimension_unlock=DimensionalLayer.ETHEREAL
+                bonuses={'attack_speed': 0.1, 'combo_efficiency': 0.15}
             ),
             # Add more nodes...
         ]
+        self.specializations[Specialization.BLADE_MASTER] = nodes
+
+    def gain_mastery_experience(
+        self,
+        mastery_type: MasteryType,
+        amount: float,
+        source: str
+    ) -> bool:
+        """Gain experience in a mastery type"""
+        mastery = self.masteries[mastery_type]
+        mastery.experience += amount
         
-        # Add other progression trees...
+        leveled_up = False
+        while mastery.experience >= mastery.get_next_level_requirement():
+            mastery.experience -= mastery.get_next_level_requirement()
+            mastery.level += 1
+            leveled_up = True
+            
+            # Check for milestones
+            milestone_key = f"{mastery_type.name}_level_{mastery.level}"
+            if milestone_key not in mastery.milestones_achieved:
+                mastery.milestones_achieved.add(milestone_key)
+                self.milestones[milestone_key] = datetime.now()
         
+        return leveled_up
+
+    def unlock_specialization_node(
+        self,
+        specialization: Specialization,
+        node_name: str
+    ) -> bool:
+        """Attempt to unlock a specialization node"""
+        if specialization not in self.specializations:
+            return False
+            
+        # Find the node
+        node = next(
+            (n for n in self.specializations[specialization] if n.name == node_name),
+            None
+        )
+        if not node or node.is_unlocked:
+            return False
+            
+        # Check requirements
+        character_state = self.get_character_state()
+        if not node.meets_requirements(character_state):
+            return False
+            
+        # Check if we have points available
+        if self.specialization_points <= 0:
+            return False
+            
+        # Unlock the node
+        node.is_unlocked = True
+        node.is_active = True
+        self.specialization_points -= 1
+        
+        # Apply bonuses
+        self._apply_specialization_bonuses(node)
+        
+        return True
+
+    def _apply_specialization_bonuses(self, node: SpecializationNode) -> None:
+        """Apply bonuses from a specialization node"""
+        for bonus_type, value in node.bonuses.items():
+            if bonus_type in self.combat_multipliers:
+                self.combat_multipliers[bonus_type] *= (1 + value)
+            elif bonus_type.startswith('stat_'):
+                stat_name = bonus_type[5:]
+                if stat_name in self.stat_modifiers:
+                    self.stat_modifiers[stat_name][f"spec_{node.name}"] = value
+
+    def get_character_state(self) -> Dict[str, Any]:
+        """Get current character state for requirement checking"""
+        return {
+            'level': self.level,
+            'stats': self.get_effective_stats(),
+            'masteries': {m.mastery_type.name: m.level for m in self.masteries.values()},
+            'abilities': {
+                name: ability.current_rank
+                for name, ability in self.ability_system.abilities.items()
+                if ability.is_unlocked
+            },
+            'achievements': self.achievements,
+            'milestones': self.milestones
+        }
+
+    def get_effective_stats(self) -> Dict[StatType, float]:
+        """Calculate effective stats with all modifiers"""
+        effective_stats = self.base_stats.copy()
+        
+        # Apply stat modifiers
+        for stat, modifiers in self.stat_modifiers.items():
+            for modifier in modifiers.values():
+                effective_stats[stat] *= (1 + modifier)
+        
+        # Apply mastery bonuses
+        for mastery in self.masteries.values():
+            if mastery.mastery_type == MasteryType.COMBAT:
+                effective_stats[StatType.PHYSICAL_POWER] *= (1 + 0.05 * mastery.level)
+                effective_stats[StatType.DEFENSE] *= (1 + 0.03 * mastery.level)
+            elif mastery.mastery_type == MasteryType.DIMENSIONAL:
+                effective_stats[StatType.DIMENSIONAL_ATTUNEMENT] *= (1 + 0.05 * mastery.level)
+                effective_stats[StatType.STABILITY_CONTROL] *= (1 + 0.04 * mastery.level)
+        
+        return effective_stats
+
+    def get_combat_multiplier(self, multiplier_type: str) -> float:
+        """Get the current value of a combat multiplier"""
+        return self.combat_multipliers.get(multiplier_type, 1.0)
+
+    def reset_specialization(self, specialization: Specialization) -> bool:
+        """Reset a specialization tree and refund points"""
+        if specialization not in self.specializations:
+            return False
+            
+        refunded_points = 0
+        for node in self.specializations[specialization]:
+            if node.is_unlocked:
+                node.is_unlocked = False
+                node.is_active = False
+                refunded_points += 1
+                
+        self.specialization_points += refunded_points
+        return True
+
+    def save_progression(self) -> Dict[str, Any]:
+        """Save progression data"""
+        return {
+            'level': self.level,
+            'experience': self.experience,
+            'progression_path': self.progression_path.name if self.progression_path else None,
+            'base_stats': {str(k): v for k, v in self.base_stats.items()},
+            'masteries': {
+                mastery.mastery_type.name: {
+                    'level': mastery.level,
+                    'experience': mastery.experience,
+                    'milestones': list(mastery.milestones_achieved)
+                }
+                for mastery in self.masteries.values()
+            },
+            'specializations': {
+                spec.name: [
+                    {
+                        'name': node.name,
+                        'is_unlocked': node.is_unlocked,
+                        'is_active': node.is_active
+                    }
+                    for node in nodes
+                ]
+                for spec, nodes in self.specializations.items()
+            },
+            'achievements': list(self.achievements),
+            'milestones': {
+                k: v.isoformat() for k, v in self.milestones.items()
+            }
+        }
+
+    def load_progression(self, data: Dict[str, Any]) -> None:
+        """Load progression data"""
+        self.level = data['level']
+        self.experience = data['experience']
+        self.progression_path = (
+            ProgressionPath[data['progression_path']]
+            if data['progression_path'] else None
+        )
+        
+        # Load stats
+        for stat_name, value in data['base_stats'].items():
+            self.base_stats[StatType[stat_name]] = value
+            
+        # Load masteries
+        for mastery_name, mastery_data in data['masteries'].items():
+            mastery_type = MasteryType[mastery_name]
+            self.masteries[mastery_type].level = mastery_data['level']
+            self.masteries[mastery_type].experience = mastery_data['experience']
+            self.masteries[mastery_type].milestones_achieved = set(mastery_data['milestones'])
+            
+        # Load specializations
+        for spec_name, nodes_data in data['specializations'].items():
+            spec = Specialization[spec_name]
+            for node_data, node in zip(nodes_data, self.specializations[spec]):
+                node.is_unlocked = node_data['is_unlocked']
+                node.is_active = node_data['is_active']
+                
+        # Load achievements and milestones
+        self.achievements = set(data['achievements'])
+        self.milestones = {
+            k: datetime.fromisoformat(v)
+            for k, v in data['milestones'].items()
+        }
+
     def get_experience_requirement(self) -> float:
         """Get experience required for next level"""
         return 100.0 * (1.5 ** (self.level - 1))

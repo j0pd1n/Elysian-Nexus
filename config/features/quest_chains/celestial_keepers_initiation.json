@@ -1,0 +1,217 @@
+{
+    "chain_id": "celestial_keepers_initiation",
+    "display_name": "Path of the Celestial Keeper",
+    "chain_type": "faction",
+    "prerequisites": {
+        "player_level": 8,
+        "quests_completed": ["ms_ch3_astral_bridge"],
+        "dimensional_energy": 200,
+        "reputation": {
+            "celestial_keepers": 500
+        }
+    },
+    "quests": [
+        {
+            "quest_id": "ck_astral_attunement",
+            "title": "Celestial Resonance",
+            "description": "Begin your journey as a Celestial Keeper by attuning to the astral energies.",
+            "objectives": [
+                {
+                    "type": "explore",
+                    "target": "celestial_observatory",
+                    "description": "Locate the Celestial Observatory",
+                    "progress_type": "percentage",
+                    "required_progress": 100
+                },
+                {
+                    "type": "collect",
+                    "target": "astral_essence",
+                    "quantity": 5,
+                    "description": "Gather Astral Essence"
+                },
+                {
+                    "type": "interact",
+                    "target": "celestial_beacon",
+                    "description": "Attune to the Celestial Beacon"
+                }
+            ],
+            "rewards": {
+                "experience": 4000,
+                "currency": 2000,
+                "items": [
+                    {
+                        "id": "celestial_initiate_robes",
+                        "quality": "rare",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "celestial_keepers",
+                    "amount": 1000
+                }
+            }
+        },
+        {
+            "quest_id": "ck_stellar_harmony",
+            "title": "Keeper of Harmony",
+            "prerequisites": {
+                "quest_completed": "ck_astral_attunement",
+                "player_level": 10
+            },
+            "objectives": [
+                {
+                    "type": "craft",
+                    "target": "harmonic_resonator",
+                    "quantity": 1,
+                    "description": "Craft a Harmonic Resonator"
+                },
+                {
+                    "type": "dimensional_shift",
+                    "target": ["celestial_realm", "astral_plane"],
+                    "description": "Stabilize Dimensional Rifts",
+                    "progress_type": "counter",
+                    "required_progress": 2
+                },
+                {
+                    "type": "collect",
+                    "target": "celestial_harmony_crystal",
+                    "quantity": 3,
+                    "description": "Collect Harmony Crystals"
+                }
+            ],
+            "rewards": {
+                "experience": 5000,
+                "currency": 2500,
+                "items": [
+                    {
+                        "id": "celestial_resonance_focus",
+                        "quality": "epic",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "celestial_keepers",
+                    "amount": 1500
+                }
+            }
+        },
+        {
+            "quest_id": "ck_dimensional_guardian",
+            "title": "Guardian of the Veil",
+            "prerequisites": {
+                "quest_completed": "ck_stellar_harmony",
+                "player_level": 12
+            },
+            "objectives": [
+                {
+                    "type": "craft",
+                    "target": "celestial_ward",
+                    "quantity": 3,
+                    "description": "Create Celestial Wards"
+                },
+                {
+                    "type": "kill",
+                    "target": "void_aberration",
+                    "quantity": 5,
+                    "description": "Banish Void Aberrations"
+                },
+                {
+                    "type": "interact",
+                    "target": "celestial_anchor_points",
+                    "description": "Strengthen Dimensional Anchors",
+                    "progress_type": "counter",
+                    "required_progress": 3
+                }
+            ],
+            "rewards": {
+                "experience": 6000,
+                "currency": 3000,
+                "items": [
+                    {
+                        "id": "celestial_guardian_aegis",
+                        "quality": "epic",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "celestial_keepers",
+                    "amount": 2000
+                }
+            }
+        },
+        {
+            "quest_id": "ck_ascension",
+            "title": "Celestial Ascension",
+            "prerequisites": {
+                "quest_completed": "ck_dimensional_guardian",
+                "player_level": 15
+            },
+            "objectives": [
+                {
+                    "type": "craft",
+                    "target": "celestial_crown",
+                    "quantity": 1,
+                    "description": "Forge your Celestial Crown"
+                },
+                {
+                    "type": "dimensional_shift",
+                    "target": ["celestial_sanctum", "astral_nexus", "void_threshold"],
+                    "description": "Master Multi-realm Navigation",
+                    "progress_type": "counter",
+                    "required_progress": 3
+                },
+                {
+                    "type": "interact",
+                    "target": "celestial_council",
+                    "description": "Face the Celestial Council's Trial"
+                }
+            ],
+            "rewards": {
+                "experience": 8000,
+                "currency": 4000,
+                "items": [
+                    {
+                        "id": "celestial_keeper_crown",
+                        "quality": "epic",
+                        "quantity": 1
+                    },
+                    {
+                        "id": "astral_shard_collection",
+                        "quality": "epic",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "celestial_keepers",
+                    "amount": 3000
+                }
+            }
+        }
+    ],
+    "chain_completion_rewards": {
+        "experience": 15000,
+        "currency": 7500,
+        "reputation": {
+            "faction": "celestial_keepers",
+            "amount": 5000
+        },
+        "items": [
+            {
+                "id": "celestial_keeper_title",
+                "quality": "legendary",
+                "quantity": 1
+            },
+            {
+                "id": "celestial_dimensional_key",
+                "quality": "epic",
+                "quantity": 1
+            }
+        ],
+        "dimensional_energy": 1000,
+        "unlocks": {
+            "vendor_access": "celestial_keeper_supplies",
+            "daily_quests": "celestial_maintenance_tasks",
+            "abilities": ["celestial_ward", "dimensional_anchor"]
+        }
+    }
+} 

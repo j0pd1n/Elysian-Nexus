@@ -4,6 +4,12 @@ from typing import Dict, List, Optional, Any, Tuple, Set, DefaultDict, Callable,
 import statistics
 from enum import Enum
 import re
+from queue import PriorityQueue
+from threading import Lock, Event
+from dataclasses import dataclass, field
+from typing import TypeVar, Generic
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 from .event_types import (
     GameEvent, EventCategory, CombatEvent, QuestEvent,
@@ -11,6 +17,8 @@ from .event_types import (
     DimensionalEvent
 )
 from ...combat_system.dimensional_combat import DimensionalLayer, DimensionalEffect
+
+T = TypeVar('T')
 
 class PatternType(Enum):
     """Types of patterns that can be detected."""
@@ -107,9 +115,92 @@ class PatternMatcher:
                 (pattern.max_occurrences is None or 
                  occurrence_count <= pattern.max_occurrences))
 
-class EventAggregator:
-    """Aggregates and analyzes event patterns."""
+@dataclass(order=True)
+class PrioritizedEvent:
+    priority: int
+    timestamp: datetime = field(compare=False)
+    event: GameEvent = field(compare=False)
 
+class EventPriority(Enum):
+    CRITICAL = 0
+    HIGH = 1
+    NORMAL = 2
+    LOW = 3
+    BACKGROUND = 4
+
+class EventBatch:
+    def __init__(self, max_size: int = 100, max_wait: float = 0.1):
+        self.events: List[PrioritizedEvent] = []
+        self.max_size = max_size
+        self.max_wait = max_wait
+        self.last_flush = datetime.now()
+        self.lock = Lock()
+
+    def add(self, event: PrioritizedEvent) -> bool:
+        with self.lock:
+            self.events.append(event)
+            return len(self.events) >= self.max_size or \
+                   (datetime.now() - self.last_flush).total_seconds() >= self.max_wait
+
+    def flush(self) -> List[PrioritizedEvent]:
+        with self.lock:
+            events = self.events.copy()
+            self.events.clear()
+            self.last_flush = datetime.now()
+            return events
+
+class ThreadSafeEventQueue:
+    def __init__(self):
+        self.queue: PriorityQueue[PrioritizedEvent] = PriorityQueue()
+        self.lock = Lock()
+        self.event_available = Event()
+        self.batches: Dict[EventPriority, EventBatch] = {
+            priority: EventBatch() for priority in EventPriority
+        }
+        self.executor = ThreadPoolExecutor(max_workers=4)
+
+    def put(self, event: GameEvent, priority: EventPriority = EventPriority.NORMAL) -> None:
+        prioritized_event = PrioritizedEvent(
+            priority=priority.value,
+            timestamp=datetime.now(),
+            event=event
+        )
+        
+        with self.lock:
+            batch = self.batches[priority]
+            should_flush = batch.add(prioritized_event)
+            
+            if should_flush:
+                self._flush_batch(priority)
+
+    def _flush_batch(self, priority: EventPriority) -> None:
+        batch_events = self.batches[priority].flush()
+        for event in batch_events:
+            self.queue.put(event)
+        self.event_available.set()
+
+    def get(self, timeout: Optional[float] = None) -> Optional[GameEvent]:
+        try:
+            if self.event_available.wait(timeout):
+                with self.lock:
+                    if self.queue.empty():
+                        self.event_available.clear()
+                        return None
+                    return self.queue.get().event
+        except Exception:
+            return None
+
+    async def process_events_async(self, handler: Callable[[GameEvent], Any]) -> None:
+        while True:
+            event = self.get(timeout=0.1)
+            if event:
+                await asyncio.get_event_loop().run_in_executor(
+                    self.executor,
+                    handler,
+                    event
+                )
+
+class EventAggregator:
     def __init__(self, window_size: timedelta = timedelta(minutes=5)):
         self.window_size = window_size
         self._combat_stats: Dict[str, List[float]] = defaultdict(list)
@@ -117,7 +208,11 @@ class EventAggregator:
         self._event_counts: Dict[EventCategory, int] = defaultdict(int)
         self._last_aggregation = datetime.now()
         
-        # Enhanced tracking
+        # Enhanced event processing
+        self.event_queue = ThreadSafeEventQueue()
+        self._processing_task: Optional[asyncio.Task] = None
+        
+        # Existing tracking
         self._event_sequence: deque = deque(maxlen=1000)
         self._patterns: Dict[str, EventPattern] = {}
         self._location_stats: DefaultDict[str, int] = defaultdict(int)
@@ -126,15 +221,33 @@ class EventAggregator:
         self._skill_usage: DefaultDict[str, int] = defaultdict(int)
         self._combat_combos: DefaultDict[tuple, int] = defaultdict(int)
         self._player_achievements: Set[str] = set()
-        
-        # Enhanced pattern tracking
         self._pattern_matches: DefaultDict[str, List[datetime]] = defaultdict(list)
         self._composite_patterns: Dict[str, List[str]] = {}
-
         self._dimensional_stats: DefaultDict[DimensionalLayer, Dict[str, float]] = defaultdict(
             lambda: {'stability': 1.0, 'distortion': 0.0, 'effect_count': 0}
         )
         self._dimensional_transitions: DefaultDict[Tuple[DimensionalLayer, DimensionalLayer], int] = defaultdict(int)
+
+    async def start_processing(self) -> None:
+        """Start asynchronous event processing."""
+        if self._processing_task is None:
+            self._processing_task = asyncio.create_task(
+                self.event_queue.process_events_async(self.process_event)
+            )
+
+    async def stop_processing(self) -> None:
+        """Stop asynchronous event processing."""
+        if self._processing_task:
+            self._processing_task.cancel()
+            try:
+                await self._processing_task
+            except asyncio.CancelledError:
+                pass
+            self._processing_task = None
+
+    def submit_event(self, event: GameEvent, priority: EventPriority = EventPriority.NORMAL) -> None:
+        """Submit an event for processing with priority."""
+        self.event_queue.put(event, priority)
 
     def process_event(self, event: GameEvent) -> None:
         """Process an event for aggregation."""

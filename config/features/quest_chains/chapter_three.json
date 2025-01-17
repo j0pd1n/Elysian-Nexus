@@ -1,0 +1,207 @@
+{
+    "chain_id": "main_story_chapter_three",
+    "display_name": "Chapter Three: Celestial Harmony",
+    "prerequisites": {
+        "player_level": 10,
+        "quests_completed": ["ms_ch2_void_mastery"],
+        "dimensional_energy": 300,
+        "reputation": {
+            "mystics": 2000,
+            "void_walkers": 1000
+        }
+    },
+    "quests": [
+        {
+            "quest_id": "ms_ch3_celestial_signs",
+            "title": "Signs in the Sky",
+            "description": "Strange celestial phenomena appear as the dimensional barriers weaken.",
+            "objectives": [
+                {
+                    "type": "explore",
+                    "target": "astral_observatory",
+                    "description": "Visit the Astral Observatory",
+                    "progress_type": "percentage",
+                    "required_progress": 100
+                },
+                {
+                    "type": "interact",
+                    "target": "celestial_sage",
+                    "description": "Consult the Celestial Sage"
+                },
+                {
+                    "type": "collect",
+                    "target": "astral_readings",
+                    "quantity": 5,
+                    "description": "Gather Astral readings from different locations"
+                }
+            ],
+            "rewards": {
+                "experience": 5000,
+                "currency": 2500,
+                "items": [
+                    {
+                        "id": "celestial_compass",
+                        "quality": "rare",
+                        "quantity": 1
+                    }
+                ],
+                "dimensional_energy": 150
+            }
+        },
+        {
+            "quest_id": "ms_ch3_astral_bridge",
+            "title": "Bridge Between Realms",
+            "prerequisites": {
+                "quest_completed": "ms_ch3_celestial_signs",
+                "player_level": 12
+            },
+            "objectives": [
+                {
+                    "type": "collect",
+                    "target": "celestial_crystal",
+                    "quantity": 3,
+                    "description": "Gather Celestial Crystals"
+                },
+                {
+                    "type": "craft",
+                    "target": "astral_bridge_focus",
+                    "quantity": 1,
+                    "description": "Craft an Astral Bridge Focus"
+                },
+                {
+                    "type": "dimensional_shift",
+                    "target": "celestial_realm",
+                    "description": "Enter the Celestial Realm"
+                }
+            ],
+            "rewards": {
+                "experience": 6000,
+                "currency": 3000,
+                "items": [
+                    {
+                        "id": "celestial_attunement_stone",
+                        "quality": "epic",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "celestial_keepers",
+                    "amount": 1000
+                }
+            }
+        },
+        {
+            "quest_id": "ms_ch3_celestial_trials",
+            "title": "Trials of Ascension",
+            "prerequisites": {
+                "quest_completed": "ms_ch3_astral_bridge",
+                "player_level": 14
+            },
+            "objectives": [
+                {
+                    "type": "explore",
+                    "target": "trial_chambers",
+                    "description": "Discover the Trial Chambers",
+                    "progress_type": "percentage",
+                    "required_progress": 100
+                },
+                {
+                    "type": "kill",
+                    "target": "celestial_guardians",
+                    "quantity": 5,
+                    "description": "Overcome Celestial Guardians"
+                },
+                {
+                    "type": "interact",
+                    "target": "celestial_forge",
+                    "description": "Activate the Celestial Forge"
+                }
+            ],
+            "rewards": {
+                "experience": 7000,
+                "currency": 3500,
+                "items": [
+                    {
+                        "id": "celestial_guardian_emblem",
+                        "quality": "epic",
+                        "quantity": 1
+                    }
+                ],
+                "dimensional_energy": 250,
+                "reputation": {
+                    "faction": "celestial_keepers",
+                    "amount": 1500
+                }
+            }
+        },
+        {
+            "quest_id": "ms_ch3_dimensional_balance",
+            "title": "Balance of Powers",
+            "prerequisites": {
+                "quest_completed": "ms_ch3_celestial_trials",
+                "player_level": 15
+            },
+            "objectives": [
+                {
+                    "type": "craft",
+                    "target": "harmonic_resonator",
+                    "quantity": 1,
+                    "description": "Craft a Harmonic Resonator"
+                },
+                {
+                    "type": "dimensional_shift",
+                    "target": ["ethereal_plane", "void_dimension", "celestial_realm"],
+                    "description": "Activate the resonator in all three realms",
+                    "progress_type": "counter",
+                    "required_progress": 3
+                },
+                {
+                    "type": "interact",
+                    "target": "dimensional_nexus",
+                    "description": "Stabilize the Dimensional Nexus"
+                }
+            ],
+            "rewards": {
+                "experience": 8000,
+                "currency": 4000,
+                "items": [
+                    {
+                        "id": "celestial_harmonizer",
+                        "quality": "epic",
+                        "quantity": 1
+                    }
+                ],
+                "dimensional_energy": 300,
+                "reputation": {
+                    "faction": "celestial_keepers",
+                    "amount": 2000
+                }
+            }
+        }
+    ],
+    "chain_completion_rewards": {
+        "experience": 15000,
+        "currency": 7500,
+        "reputation": {
+            "faction": "celestial_keepers",
+            "amount": 3000,
+            "faction": "mystics",
+            "amount": 1500,
+            "faction": "void_walkers",
+            "amount": 1500
+        },
+        "items": [
+            {
+                "id": "celestial_keeper_armor_set",
+                "quality": "epic",
+                "quantity": 1
+            },
+            {
+                "id": "dimensional_harmony_focus",
+                "quality": "legendary",
+                "quantity": 1
+            }
+        ],
+        "dimensional_energy": 1000
+    }
+} 

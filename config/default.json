@@ -1,0 +1,44 @@
+{
+    "game": {
+        "name": "Elysian Nexus",
+        "version": "0.1.0",
+        "debug_mode": false,
+        "save_interval": 300,
+        "max_fps": 60
+    },
+    "graphics": {
+        "resolution": {
+            "width": 1920,
+            "height": 1080
+        },
+        "fullscreen": false,
+        "vsync": true,
+        "quality": "high"
+    },
+    "audio": {
+        "master_volume": 1.0,
+        "music_volume": 0.7,
+        "sfx_volume": 0.8,
+        "voice_volume": 1.0
+    },
+    "gameplay": {
+        "difficulty": "normal",
+        "tutorial_enabled": true,
+        "auto_save": true,
+        "combat_difficulty": 1.0,
+        "dimensional_effects": true
+    },
+    "performance": {
+        "max_particles": 10000,
+        "view_distance": 1000,
+        "shadow_quality": "high",
+        "texture_quality": "high",
+        "antialiasing": "msaa_4x"
+    },
+    "development": {
+        "debug_logging": false,
+        "performance_metrics": false,
+        "dev_console": false,
+        "test_features": false
+    }
+} 

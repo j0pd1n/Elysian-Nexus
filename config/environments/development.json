@@ -1,0 +1,29 @@
+{
+    "game": {
+        "name": "Elysian Nexus",
+        "version": "0.1.0",
+        "debug_mode": true,
+        "save_interval": 60,
+        "max_fps": 0
+    },
+    "development": {
+        "debug_logging": true,
+        "performance_metrics": true,
+        "dev_console": true,
+        "test_features": true,
+        "hot_reload": true,
+        "debug_tools": {
+            "entity_inspector": true,
+            "performance_overlay": true,
+            "debug_console": true,
+            "ai_debugger": true
+        }
+    },
+    "performance": {
+        "max_particles": 5000,
+        "view_distance": 500,
+        "shadow_quality": "medium",
+        "texture_quality": "medium",
+        "antialiasing": "fxaa"
+    }
+} 

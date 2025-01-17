@@ -1,10 +1,15 @@
 import json
 import time
 from pathlib import Path
-from typing import Dict, Optional, Any, Set
+from typing import Dict, Optional, Any, Set, List, Tuple
 from dataclasses import dataclass, asdict
+import logging
 
 from .enums import GameState, GameMode, DifficultyLevel, Location, QuestStatus
+from ..state_validation.state_validator import StateValidator, ValidationSeverity, ValidationIssue
+from ..state_versioning.state_version_manager import StateVersionManager, StateVersion
+
+logger = logging.getLogger(__name__)
 
 @dataclass
 class CheckpointData:
@@ -223,6 +228,7 @@ class GameStateManager:
     }
 
     def __init__(self):
+        # Initialize existing attributes
         self.current_state: GameState = GameState.MAIN_MENU
         self.current_mode: GameMode = GameMode.MENU
         self.difficulty: DifficultyLevel = DifficultyLevel.NORMAL
@@ -232,8 +238,21 @@ class GameStateManager:
         self.world_state: Dict[str, Any] = {}
         self.quest_status: Dict[str, QuestStatus] = {}
         self.last_checkpoint: Optional[CheckpointData] = None
+        
+        # Create necessary directories
         self.save_directory = Path("saves")
         self.checkpoint_directory = Path("checkpoints")
+        self.version_directory = Path("versions")
+        self.save_directory.mkdir(exist_ok=True)
+        self.checkpoint_directory.mkdir(exist_ok=True)
+        self.version_directory.mkdir(exist_ok=True)
+        
+        # Initialize systems
+        self.validator = StateValidator()
+        self.version_manager = StateVersionManager(self.version_directory)
+        self.validation_errors: List[ValidationIssue] = []
+        
+        # Initialize tracking variables
         self.last_checkpoint_time = time.time()
         self.checkpoint_interval = 300  # 5 minutes in seconds
         self.last_health_percentage = 100
@@ -243,10 +262,7 @@ class GameStateManager:
         self.last_merchant_interaction = 0
         self.consecutive_deaths = 0
         
-        # Create necessary directories
-        self.save_directory.mkdir(exist_ok=True)
-        self.checkpoint_directory.mkdir(exist_ok=True)
-
+        # Initialize environmental conditions
         self.environmental_conditions = EnvironmentalConditions(
             weather_type='clear',
             time_of_day=12,
@@ -258,8 +274,196 @@ class GameStateManager:
             terrain_type='normal',
             light_level=1.0
         )
-        self.faction_standings = {}  # faction_id -> reputation value
-        self.active_faction_effects = set()  # Current faction-based effects
+        self.faction_standings = {}
+        self.active_faction_effects = set()
+
+    def _get_full_state(self) -> Dict[str, Any]:
+        """Get the complete current state as a dictionary."""
+        return {
+            "game_state": self.current_state.name,
+            "game_mode": self.current_mode.name,
+            "difficulty": self.difficulty.name,
+            "location": self.current_location.name if self.current_location else None,
+            "player_data": self.player_data,
+            "world_state": self.world_state,
+            "quest_status": {k: v.name for k, v in self.quest_status.items()},
+            "environmental_conditions": asdict(self.environmental_conditions),
+            "faction_standings": self.faction_standings,
+            "active_faction_effects": list(self.active_faction_effects),
+            "version": self.version_manager.CURRENT_STATE_VERSION
+        }
+
+    def _apply_state(self, state_data: Dict[str, Any]):
+        """Apply a complete state from a dictionary."""
+        self.current_state = GameState[state_data["game_state"]]
+        self.current_mode = GameMode[state_data["game_mode"]]
+        self.difficulty = DifficultyLevel[state_data["difficulty"]]
+        self.current_location = Location[state_data["location"]] if state_data["location"] else None
+        self.player_data = state_data["player_data"]
+        self.world_state = state_data["world_state"]
+        self.quest_status = {k: QuestStatus[v] for k, v in state_data["quest_status"].items()}
+        self.environmental_conditions = EnvironmentalConditions(**state_data["environmental_conditions"])
+        self.faction_standings = state_data["faction_standings"]
+        self.active_faction_effects = set(state_data["active_faction_effects"])
+
+    def create_checkpoint(self) -> Optional[CheckpointData]:
+        """Create a checkpoint of the current game state with validation and versioning."""
+        if not self._validate_current_state():
+            logger.error("Failed to create checkpoint due to validation errors:")
+            for error in self.validation_errors:
+                if error.severity in {ValidationSeverity.ERROR, ValidationSeverity.CRITICAL}:
+                    logger.error(f"{error.severity.name}: {error.message}")
+            return None
+            
+        # Create checkpoint data
+        checkpoint = CheckpointData(
+            timestamp=time.time(),
+            location=self.current_location,
+            game_state=self.current_state,
+            game_mode=self.current_mode,
+            quest_status=self.quest_status.copy(),
+            player_data=self.player_data.copy(),
+            world_state=self.world_state.copy()
+        )
+        
+        # Create version with checkpoint metadata
+        state_data = self._get_full_state()
+        self.version_manager.create_version(
+            state_data,
+            metadata={
+                "type": "checkpoint",
+                "checkpoint_id": str(checkpoint.timestamp)
+            }
+        )
+        
+        self.last_checkpoint = checkpoint
+        
+        # Save checkpoint to disk
+        checkpoint_path = self.checkpoint_directory / f"checkpoint_{int(checkpoint.timestamp)}.json"
+        with open(checkpoint_path, 'w') as f:
+            json.dump(asdict(checkpoint), f, indent=2)
+            
+        return checkpoint
+
+    def save_game(self, slot: int) -> bool:
+        """Save the current game state with validation and versioning."""
+        if not self._validate_current_state():
+            logger.error("Failed to save game due to validation errors:")
+            for error in self.validation_errors:
+                if error.severity in {ValidationSeverity.ERROR, ValidationSeverity.CRITICAL}:
+                    logger.error(f"{error.severity.name}: {error.message}")
+            return False
+            
+        # Create version for save
+        state_data = self._get_full_state()
+        version = self.version_manager.create_version(
+            state_data,
+            metadata={
+                "type": "save",
+                "slot": slot,
+                "timestamp": time.time()
+            }
+        )
+        
+        # Save game data
+        save_data = {
+            "version_id": version.version_id,
+            "timestamp": time.time(),
+            "state_data": state_data
+        }
+        
+        save_path = self.save_directory / f"save_{slot}.json"
+        try:
+            with open(save_path, 'w') as f:
+                json.dump(save_data, f, indent=2)
+            return True
+        except Exception as e:
+            logger.error(f"Failed to save game: {e}")
+            return False
+
+    def load_game(self, slot: int) -> bool:
+        """Load a game state with validation and versioning."""
+        save_path = self.save_directory / f"save_{slot}.json"
+        
+        try:
+            with open(save_path, 'r') as f:
+                save_data = json.load(f)
+                
+            # Load and verify version
+            version = self.version_manager.load_version(save_data["version_id"])
+            if not version:
+                logger.error("Failed to load save version")
+                return False
+                
+            # Migrate state if necessary
+            state_data = version.state_data
+            if state_data.get("version") != self.version_manager.CURRENT_STATE_VERSION:
+                state_data = self.version_manager.migrate_state(
+                    state_data,
+                    state_data.get("version", "0.9.0")
+                )
+                
+            # Validate state data
+            player_issues = self.validator.validate_state(state_data["player_data"], "player_data")
+            world_issues = self.validator.validate_state(state_data["world_state"], "world_state")
+            
+            critical_issues = [issue for issue in player_issues + world_issues 
+                             if issue.severity in {ValidationSeverity.ERROR, ValidationSeverity.CRITICAL}]
+            
+            if critical_issues:
+                logger.error("Failed to load game due to validation errors:")
+                for issue in critical_issues:
+                    logger.error(f"{issue.severity.name}: {issue.message}")
+                return False
+                
+            # Apply state
+            self._apply_state(state_data)
+            
+            # Log non-critical issues
+            for issue in player_issues + world_issues:
+                if issue.severity in {ValidationSeverity.INFO, ValidationSeverity.WARNING}:
+                    logger.warning(f"{issue.severity.name}: {issue.message}")
+                    
+            return True
+            
+        except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
+            logger.error(f"Failed to load game: {e}")
+            return False
+
+    def get_save_history(self, slot: int) -> List[Tuple[str, datetime]]:
+        """Get the version history for a save slot."""
+        save_path = self.save_directory / f"save_{slot}.json"
+        try:
+            with open(save_path, 'r') as f:
+                save_data = json.load(f)
+            return self.version_manager.get_version_history()
+        except (FileNotFoundError, json.JSONDecodeError):
+            return []
+
+    def rollback_save(self, slot: int, version_id: str) -> bool:
+        """Rollback a save to a specific version."""
+        try:
+            # Rollback to specified version
+            new_version = self.version_manager.rollback_to_version(version_id)
+            if not new_version:
+                return False
+                
+            # Update save file
+            save_data = {
+                "version_id": new_version.version_id,
+                "timestamp": time.time(),
+                "state_data": new_version.state_data
+            }
+            
+            save_path = self.save_directory / f"save_{slot}.json"
+            with open(save_path, 'w') as f:
+                json.dump(save_data, f, indent=2)
+                
+            return True
+            
+        except Exception as e:
+            logger.error(f"Failed to rollback save: {e}")
+            return False
 
     def is_valid_state_transition(self, current: GameState, new: GameState) -> bool:
         """Enhanced state transition validation including environmental and faction conditions."""
@@ -633,72 +837,6 @@ class GameStateManager:
         self.world_state['faction_territory_changed'] = False
         self.world_state['faction_quest_completed'] = False
         self.world_state['faction_alliance_changed'] = False
-
-    def create_checkpoint(self) -> CheckpointData:
-        """Create a checkpoint of the current game state."""
-        checkpoint = CheckpointData(
-            timestamp=time.time(),
-            location=self.current_location,
-            game_state=self.current_state,
-            game_mode=self.current_mode,
-            quest_status=self.quest_status.copy(),
-            player_data=self.player_data.copy(),
-            world_state=self.world_state.copy()
-        )
-        self.last_checkpoint = checkpoint
-        
-        # Save checkpoint to disk
-        checkpoint_path = self.checkpoint_directory / f"checkpoint_{int(checkpoint.timestamp)}.json"
-        with open(checkpoint_path, 'w') as f:
-            json.dump(asdict(checkpoint), f, indent=2)
-        
-        return checkpoint
-
-    def load_checkpoint(self, checkpoint: CheckpointData):
-        """Restore game state from a checkpoint."""
-        self.current_location = checkpoint.location
-        self.current_state = checkpoint.game_state
-        self.current_mode = checkpoint.game_mode
-        self.quest_status = checkpoint.quest_status.copy()
-        self.player_data = checkpoint.player_data.copy()
-        self.world_state = checkpoint.world_state.copy()
-
-    def save_game(self, slot: int):
-        """Save the current game state to a specified slot."""
-        save_data = {
-            'timestamp': time.time(),
-            'difficulty': self.difficulty.name,
-            'location': self.current_location.name if self.current_location else None,
-            'game_state': self.current_state.name,
-            'game_mode': self.current_mode.name,
-            'quest_status': {k: v.name for k, v in self.quest_status.items()},
-            'player_data': self.player_data,
-            'world_state': self.world_state
-        }
-        
-        save_path = self.save_directory / f"save_{slot}.json"
-        with open(save_path, 'w') as f:
-            json.dump(save_data, f, indent=2)
-
-    def load_game(self, slot: int) -> bool:
-        """Load a game state from a specified slot. Returns True if successful."""
-        save_path = self.save_directory / f"save_{slot}.json"
-        
-        try:
-            with open(save_path, 'r') as f:
-                save_data = json.load(f)
-            
-            self.difficulty = DifficultyLevel[save_data['difficulty']]
-            self.current_location = Location[save_data['location']] if save_data['location'] else None
-            self.current_state = GameState[save_data['game_state']]
-            self.current_mode = GameMode[save_data['game_mode']]
-            self.quest_status = {k: QuestStatus[v] for k, v in save_data['quest_status'].items()}
-            self.player_data = save_data['player_data']
-            self.world_state = save_data['world_state']
-            return True
-            
-        except (FileNotFoundError, json.JSONDecodeError, KeyError):
-            return False
 
     def get_save_slots(self) -> Dict[int, float]:
         """Return a dictionary of save slots and their timestamps."""

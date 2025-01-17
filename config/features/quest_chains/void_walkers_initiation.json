@@ -1,0 +1,214 @@
+{
+    "chain_id": "void_walkers_initiation",
+    "display_name": "Path of the Void Walker",
+    "chain_type": "faction",
+    "prerequisites": {
+        "player_level": 6,
+        "quests_completed": ["ms_ch2_void_stabilizer"],
+        "dimensional_energy": 150,
+        "reputation": {
+            "void_walkers": 500
+        }
+    },
+    "quests": [
+        {
+            "quest_id": "vw_initiate_trials",
+            "title": "Trials of the Void",
+            "description": "Prove your worth to join the ranks of the Void Walkers.",
+            "objectives": [
+                {
+                    "type": "kill",
+                    "target": "void_wraith",
+                    "quantity": 3,
+                    "description": "Defeat Void Wraiths"
+                },
+                {
+                    "type": "collect",
+                    "target": "void_essence_pure",
+                    "quantity": 5,
+                    "description": "Collect Pure Void Essence"
+                },
+                {
+                    "type": "dimensional_shift",
+                    "target": "void_nexus",
+                    "description": "Reach the Void Nexus",
+                    "progress_type": "flag"
+                }
+            ],
+            "rewards": {
+                "experience": 3000,
+                "currency": 1500,
+                "items": [
+                    {
+                        "id": "void_walker_initiate_robes",
+                        "quality": "rare",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "void_walkers",
+                    "amount": 750
+                }
+            }
+        },
+        {
+            "quest_id": "vw_essence_mastery",
+            "title": "Essence Manipulation",
+            "prerequisites": {
+                "quest_completed": "vw_initiate_trials",
+                "player_level": 7
+            },
+            "objectives": [
+                {
+                    "type": "craft",
+                    "target": "void_essence_focus",
+                    "quantity": 1,
+                    "description": "Craft a Void Essence Focus"
+                },
+                {
+                    "type": "interact",
+                    "target": "void_font",
+                    "description": "Attune to the Void Font"
+                },
+                {
+                    "type": "collect",
+                    "target": "crystallized_void",
+                    "quantity": 3,
+                    "description": "Harvest Crystallized Void"
+                }
+            ],
+            "rewards": {
+                "experience": 3500,
+                "currency": 1800,
+                "items": [
+                    {
+                        "id": "void_essence_manipulation_guide",
+                        "quality": "rare",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "void_walkers",
+                    "amount": 1000
+                }
+            }
+        },
+        {
+            "quest_id": "vw_shadow_walking",
+            "title": "Walking Between Shadows",
+            "prerequisites": {
+                "quest_completed": "vw_essence_mastery",
+                "player_level": 8
+            },
+            "objectives": [
+                {
+                    "type": "explore",
+                    "target": "void_shadow_paths",
+                    "description": "Discover Shadow Paths",
+                    "progress_type": "percentage",
+                    "required_progress": 100
+                },
+                {
+                    "type": "dimensional_shift",
+                    "target": "shadow_realm",
+                    "description": "Access the Shadow Realm"
+                },
+                {
+                    "type": "kill",
+                    "target": "shadow_stalker",
+                    "quantity": 1,
+                    "description": "Defeat a Shadow Stalker"
+                }
+            ],
+            "rewards": {
+                "experience": 4000,
+                "currency": 2000,
+                "items": [
+                    {
+                        "id": "shadow_walker_boots",
+                        "quality": "epic",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "void_walkers",
+                    "amount": 1500
+                }
+            }
+        },
+        {
+            "quest_id": "vw_void_mastery",
+            "title": "Void Walker Ascension",
+            "prerequisites": {
+                "quest_completed": "vw_shadow_walking",
+                "player_level": 10
+            },
+            "objectives": [
+                {
+                    "type": "craft",
+                    "target": "void_walker_staff",
+                    "quantity": 1,
+                    "description": "Craft your Void Walker's Staff"
+                },
+                {
+                    "type": "interact",
+                    "target": "void_elder",
+                    "description": "Complete the Ascension Ritual"
+                },
+                {
+                    "type": "dimensional_shift",
+                    "target": ["void_nexus", "shadow_realm", "void_depths"],
+                    "description": "Master Multi-dimensional Travel",
+                    "progress_type": "counter",
+                    "required_progress": 3
+                }
+            ],
+            "rewards": {
+                "experience": 5000,
+                "currency": 2500,
+                "items": [
+                    {
+                        "id": "void_walker_master_robes",
+                        "quality": "epic",
+                        "quantity": 1
+                    },
+                    {
+                        "id": "void_walker_ring",
+                        "quality": "epic",
+                        "quantity": 1
+                    }
+                ],
+                "reputation": {
+                    "faction": "void_walkers",
+                    "amount": 2000
+                }
+            }
+        }
+    ],
+    "chain_completion_rewards": {
+        "experience": 10000,
+        "currency": 5000,
+        "reputation": {
+            "faction": "void_walkers",
+            "amount": 3000
+        },
+        "items": [
+            {
+                "id": "void_walker_master_title",
+                "quality": "legendary",
+                "quantity": 1
+            },
+            {
+                "id": "void_walker_portal_stone",
+                "quality": "epic",
+                "quantity": 1
+            }
+        ],
+        "dimensional_energy": 500,
+        "unlocks": {
+            "vendor_access": "void_walker_master_supplies",
+            "daily_quests": "void_walker_assignments",
+            "abilities": ["void_step", "shadow_meld"]
+        }
+    }
+} 

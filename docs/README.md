@@ -1,50 +1,62 @@
-# Elysian Nexus Documentation
+# Elysian Nexus
+
+A next-generation RPG featuring dimensional combat, deep character progression, and dynamic world interaction.
 
 ## Overview
-Welcome to the Elysian Nexus documentation. This guide provides comprehensive information about all systems and mechanics that make up our game.
 
-## System Documentation
+Elysian Nexus is an ambitious RPG project that combines traditional role-playing elements with innovative dimensional mechanics. Players navigate through multiple reality layers, master various combat styles, and shape their character's progression through a complex specialization system.
 
-### Core Systems
-- [Game State Management](core_systems.md#game-state-management)
-- [Event System](core_systems.md#event-system)
-- [Save System](core_systems.md#save-system)
-- [Performance Monitoring](technical_systems.md#performance-monitoring)
-- [Error Handling](technical_systems.md#error-handling)
+## Key Features
 
-### Gameplay Systems
-- [Combat System](game_mechanics.md#combat-system)
-- [Quest System](game_mechanics.md#quest-system)
-- [Faction System](world_systems.md#faction-system)
-- [Character Systems](game_mechanics.md#character-systems)
-- [Inventory & Trading](game_mechanics.md#inventory-trading)
-- [Crafting System](game_mechanics.md#crafting-system)
+- **Dimensional Combat System**: Engage in battles across different reality layers
+- **Deep Character Progression**: Multiple specialization paths and mastery systems
+- **Dynamic World**: Responsive environment that adapts to player actions
+- **Advanced AI**: Context-aware NPCs and dynamic dialogue system
+- **Rich Lore**: Deep narrative with branching storylines
+- **Crafting System**: Complex item creation with dimensional components
 
-### World Systems
-- [Weather System](world_systems.md#weather-system)
-- [Economic System](world_systems.md#economic-system)
-- [Map System](world_systems.md#map-system)
-- [Dynamic Events](world_systems.md#dynamic-events)
-- [Faction Territory & Alliances](world_systems.md#faction-territory)
+## Project Structure
 
-### UI/UX Systems
-- [Menu System](ui_interaction_systems.md#menu-system)
-- [Notification System](ui_interaction_systems.md#notification-system)
-- [Accessibility Features](ui_interaction_systems.md#accessibility)
-- [Tutorial System](ui_interaction_systems.md#tutorial-system)
+```
+elysian_nexus/
+├── src/               # Source code
+│   ├── core/         # Core engine components
+│   ├── game/         # Game-specific systems
+│   ├── ai/           # AI and behavior systems
+│   └── ui/           # User interface components
+├── assets/           # Game assets
+├── docs/             # Documentation
+├── tests/            # Test suites
+└── tools/            # Development tools
+```
 
-## Developer Guides
-- [Getting Started](technical_systems.md#getting-started)
-- [Code Style Guide](technical_systems.md#code-style)
-- [Testing Framework](technical_systems.md#testing)
-- [Contribution Guidelines](technical_systems.md#contributing)
+## Getting Started
 
-## Maintenance
-- [Performance Optimization](maintenance/performance.md)
-- [Bug Reporting](maintenance/bug_reporting.md)
-- [System Updates](maintenance/system_updates.md)
+1. Clone the repository
+2. Install dependencies: `pip install -r requirements.txt`
+3. Run the game: `python src/main.py`
 
-## API Reference
-- [Core API Documentation](subsystems/core_api.md)
-- [Event System API](subsystems/event_api.md)
-- [UI Component API](subsystems/ui_api.md) 
+## Development
+
+- Python 3.8+
+- See `requirements.txt` for dependencies
+- Follow PEP 8 style guide
+- Write tests for new features
+
+## Documentation
+
+- System documentation in `docs/systems/`
+- API documentation in `docs/api/`
+- Development guides in `docs/guides/`
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

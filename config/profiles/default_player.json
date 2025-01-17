@@ -1,0 +1,60 @@
+{
+    "controls": {
+        "keyboard": {
+            "movement": {
+                "forward": "W",
+                "backward": "S",
+                "left": "A",
+                "right": "D",
+                "jump": "SPACE",
+                "crouch": "CTRL",
+                "sprint": "SHIFT"
+            },
+            "combat": {
+                "primary_attack": "MOUSE1",
+                "secondary_attack": "MOUSE2",
+                "ability_1": "Q",
+                "ability_2": "E",
+                "ability_3": "R",
+                "ultimate": "F"
+            },
+            "interaction": {
+                "use": "F",
+                "interact": "E",
+                "inventory": "I",
+                "character": "C",
+                "map": "M",
+                "quest_log": "L"
+            }
+        }
+    },
+    "graphics": {
+        "fov": 90,
+        "motion_blur": false,
+        "bloom": true,
+        "depth_of_field": true,
+        "ambient_occlusion": true
+    },
+    "audio": {
+        "master_volume": 1.0,
+        "music_volume": 0.7,
+        "sfx_volume": 0.8,
+        "voice_volume": 1.0,
+        "ambient_volume": 0.5
+    },
+    "gameplay": {
+        "difficulty": "normal",
+        "tutorial_enabled": true,
+        "auto_save": true,
+        "camera_shake": true,
+        "damage_numbers": true,
+        "subtitles": true
+    },
+    "accessibility": {
+        "color_blind_mode": "none",
+        "screen_shake": true,
+        "text_size": "medium",
+        "high_contrast": false,
+        "reduced_motion": false
+    }
+} 
